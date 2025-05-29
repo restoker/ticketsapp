@@ -76,11 +76,10 @@ export default function Home() {
                     type: "spring",
                   }}
                 >
-                  Acme makes running global teams simple. HR, Payroll, International Employment,
-                  contractor management and more.
+                  Sistema de tickets para gestionar tus tareas y agregar prioridad segun el tipo de tarea.
                 </m.div>
 
-                <m.div
+                {/* <m.div
                   animate={{ filter: "blur(0px)", opacity: 1, x: 0 }}
                   className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6"
                   initial={{ filter: "blur(16px)", opacity: 0, x: 15 + 1 * 4 }}
@@ -113,7 +112,7 @@ export default function Home() {
                   >
                     See our plans
                   </Button>
-                </m.div>
+                </m.div> */}
               </AnimatePresence>
             </m.div>
           </LazyMotion>
