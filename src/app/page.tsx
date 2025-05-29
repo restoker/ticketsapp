@@ -59,8 +59,8 @@ export default function Home() {
                     type: "spring",
                   }}
                 >
-                  <div className="bg-hero-section-title bg-clip-text text-transparent dark:from-[#FFFFFF] dark:to-[#FFFFFF66]">
-                    Easiest way to <br /> power global teams.
+                  <div className="bg-gradient-to-r bg-clip-text text-transparent dark:from-white from-10%  dark:to-gray-200">
+                    Sistema de tickets para <br /> gestionar tus tareas.
                   </div>
                 </m.div>
 

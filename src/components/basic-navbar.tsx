@@ -62,7 +62,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
         {/* Center Content */}
         <NavbarContent justify="center">
           <NavbarItem isActive className="data-[active='true']:font-medium[date-active='true']">
-            <Link aria-current="page" className="text-default-foreground" href="#" size="sm">
+            <Link aria-current="page" className="text-default-foreground" href="/" size="sm">
               Home
             </Link>
           </NavbarItem>
@@ -91,18 +91,22 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
         {/* Right Content */}
         <NavbarContent className="hidden md:flex" justify="end">
           <NavbarItem className="ml-2 !flex gap-2">
-            <Button className="text-default-500" radius="full" variant="light">
-              Login
-            </Button>
-            <Button
-              className="bg-default-foreground font-medium text-background"
-              color="secondary"
-              endContent={<Icon icon="solar:alt-arrow-right-linear" />}
-              radius="full"
-              variant="flat"
-            >
-              Get Started
-            </Button>
+            <Link href="/login">
+              <Button className="text-default-500" radius="full" variant="light">
+                Login
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button
+                className="bg-default-foreground font-medium text-background"
+                color="secondary"
+                endContent={<Icon icon="solar:alt-arrow-right-linear" />}
+                radius="full"
+                variant="flat"
+              >
+                Registro
+              </Button>
+            </Link>
           </NavbarItem>
         </NavbarContent>
 
@@ -121,13 +125,13 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
           }}
         >
           <NavbarMenuItem>
-            <Button fullWidth as={Link} href="/#" variant="faded">
-              Sign In
+            <Button fullWidth as={Link} href="/login" variant="faded">
+              Login
             </Button>
           </NavbarMenuItem>
           <NavbarMenuItem className="mb-4">
-            <Button fullWidth as={Link} className="bg-foreground text-background" href="/#">
-              Get Started
+            <Button fullWidth as={Link} className="bg-foreground text-background" href="/register">
+              Registro
             </Button>
           </NavbarMenuItem>
           {menuItems.map((item, index) => (
