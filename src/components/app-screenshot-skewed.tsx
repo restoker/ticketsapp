@@ -1,6 +1,6 @@
-import type {ComponentProps} from "react";
+import type { ComponentProps } from "react";
 
-const AppScreenshotSkewed = ({...props}: ComponentProps<"svg">) => (
+const AppScreenshotSkewed = ({ ...props }: ComponentProps<"svg">) => (
   <svg
     fill="none"
     height="737"
@@ -63,7 +63,7 @@ const AppScreenshotSkewed = ({...props}: ComponentProps<"svg">) => (
               x="125"
               y="16"
             >
-              heroui.pro
+              task-master
             </text>
             <g clipPath="url(#clip3_3051_12573)">
               <path
@@ -154,9 +154,9 @@ const AppScreenshotSkewed = ({...props}: ComponentProps<"svg">) => (
     </g>
     <defs>
       <linearGradient id="gradient" x1="0%" x2="0%" y1="0%" y2="100%">
-        <stop offset="0%" style={{stopColor: "rgba(0, 0, 0, 0)", stopOpacity: 1}} />
-        <stop offset="50%" style={{stopColor: "rgba(0, 0, 0, 0.35)", stopOpacity: 1}} />
-        <stop offset="100%" style={{stopColor: "#000000", stopOpacity: 1}} />
+        <stop offset="0%" style={{ stopColor: "rgba(0, 0, 0, 0)", stopOpacity: 1 }} />
+        <stop offset="50%" style={{ stopColor: "rgba(0, 0, 0, 0.35)", stopOpacity: 1 }} />
+        <stop offset="100%" style={{ stopColor: "#000000", stopOpacity: 1 }} />
       </linearGradient>
       <filter
         colorInterpolationFilters="sRGB"
@@ -453,7 +453,7 @@ const AppScreenshotSkewed = ({...props}: ComponentProps<"svg">) => (
         height="2500"
         id="image0_3051_12573"
         width="3978"
-        xlinkHref="https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/marketing/hero-section-with-bottom-app-screenshot.png"
+        xlinkHref="https://cdn.cosmos.so/80c9dda5-2a9f-471a-8bf0-da2a0264c726?format=jpeg"
       />
     </defs>
   </svg>

@@ -17,7 +17,7 @@ export default function Home() {
       <BasicNavbar />
       <main className="container mx-auto mt-[80px] flex max-w-[1024px] flex-col items-start px-8">
         <section className="z-20 flex flex-col items-start justify-center gap-[18px] sm:gap-6">
-          <Button
+          {/* <Button
             className="h-9 overflow-hidden border-1 border-default-100 bg-default-50 px-[18px] py-2 text-small font-normal leading-5 text-default-500"
             endContent={
               <Icon
@@ -30,7 +30,7 @@ export default function Home() {
             variant="bordered"
           >
             New onboarding experience
-          </Button>
+          </Button> */}
           <LazyMotion features={domAnimation}>
             <m.div
               animate="kick"
