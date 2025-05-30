@@ -1,243 +1,167 @@
 'use client';
+
 import React from "react";
-import { Button, Input, Link, Tooltip } from "@heroui/react";
-import { AnimatePresence, domAnimation, LazyMotion, m } from "framer-motion";
+import { Button, Input, Checkbox, Link, Divider, Form } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import { AcmeIcon } from "./acme";
+import { Controller, useForm } from "react-hook-form";
+import { registerSchema } from "@/types/register-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
+interface IFormInput {
+    name: string;
+    email: string;
+    password: string;
+}
 const RegisterForm = () => {
-    const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
-    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = React.useState(false);
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const [confirmPassword, setConfirmPassword] = React.useState("");
-    const [[page, direction], setPage] = React.useState([0, 0]);
-    const [isEmailValid, setIsEmailValid] = React.useState(true);
-    const [isPasswordValid, setIsPasswordValid] = React.useState(true);
-    const [isConfirmPasswordValid, setIsConfirmPasswordValid] = React.useState(true);
+    const [isVisible, setIsVisible] = React.useState(false);
 
-    const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible);
-    const toggleConfirmPasswordVisibility = () =>
-        setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+    const toggleVisibility = () => setIsVisible(!isVisible);
 
-    const Title = React.useCallback(
-        (props: React.PropsWithChildren<{}>) => (
-            <m.h1
-                animate={{ opacity: 1, x: 0 }}
-                className="text-xl font-medium"
-                exit={{ opacity: 0, x: -10 }}
-                initial={{ opacity: 0, x: -10 }}
-            >
-                {props.children}
-            </m.h1>
-        ),
-        [],
-    );
+    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    //     event.preventDefault();
+    //     console.log("handleSubmit");
+    // };
 
-    const titleContent = React.useMemo(() => {
-        return page === 0 ? "Sign Up" : page === 1 ? "Enter Password" : "Confirm Password";
-    }, [page]);
 
-    const variants = {
-        enter: (direction: number) => ({
-            x: direction > 0 ? 50 : -50,
-            opacity: 0,
-        }),
-        center: {
-            zIndex: 1,
-            x: 0,
-            opacity: 1,
+    const { handleSubmit, control } = useForm<z.infer<typeof registerSchema>>({
+        mode: "all",
+        resolver: zodResolver(registerSchema),
+        defaultValues: {
+            name: "",
+            email: "",
+            password: "",
         },
-        exit: (direction: number) => ({
-            zIndex: 0,
-            x: direction < 0 ? 50 : -50,
-            opacity: 0,
-        }),
-    };
+    });
 
-    const paginate = (newDirection: number) => {
-        setPage([page + newDirection, newDirection]);
-    };
-
-    const handleEmailSubmit = () => {
-        if (!email.length) {
-            setIsEmailValid(false);
-
-            return;
-        }
-        setIsEmailValid(true);
-        paginate(1);
-    };
-
-    const handlePasswordSubmit = () => {
-        if (!password.length) {
-            setIsPasswordValid(false);
-
-            return;
-        }
-        setIsPasswordValid(true);
-        paginate(1);
-    };
-
-    const handleConfirmPasswordSubmit = () => {
-        if (!confirmPassword.length || confirmPassword !== password) {
-            setIsConfirmPasswordValid(false);
-
-            return;
-        }
-        setIsConfirmPasswordValid(true);
-        // Submit logic or API call here
-        console.log(`Email: ${email}, Password: ${password}`);
-    };
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        switch (page) {
-            case 0:
-                handleEmailSubmit();
-                break;
-            case 1:
-                handlePasswordSubmit();
-                break;
-            case 2:
-                handleConfirmPasswordSubmit();
-                break;
-            default:
-                break;
-        }
+    const onSubmit = (data: z.infer<typeof registerSchema>) => {
+        console.log(data);
     };
 
     return (
         <>
+            <div className="flex h-full w-full flex-col items-center justify-center">
+                <div className="flex flex-col items-center pb-6">
+                    <AcmeIcon size={60} />
+                    <p className="text-xl font-medium">Crear una cuenta</p>
+                    <p className="text-small text-default-500">para continuar con Task-master</p>
+                </div>
+                <div className="mt-2 flex w-full max-w-sm flex-col gap-4 rounded-large bg-content1 py-6 shadow-small">
+                    <Form className="flex flex-col gap-3" validationBehavior="native" onSubmit={handleSubmit(onSubmit)}>
+                        <Controller
+                            control={control}
+                            name="name"
+                            render={({ field: { name, value, onChange, onBlur, ref }, fieldState: { invalid, error } }) => (
+                                <Input
+                                    ref={ref}
+                                    isInvalid={invalid}
+                                    errorMessage={error?.message}
+                                    isRequired
+                                    label="Name"
+                                    name={name}
+                                    value={value}
+                                    placeholder="Enter your name"
+                                    type="text"
+                                    variant="bordered"
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                />
+                            )}
+                            rules={{ required: "Name is required." }}
+                        />
 
-            <LazyMotion features={domAnimation}>
-                <m.div className="flex min-h-[40px] items-center gap-2 pb-2">
-                    <AnimatePresence initial={false} mode="popLayout">
-                        {page >= 1 && (
-                            <m.div
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -10 }}
-                                initial={{ opacity: 0, x: -10 }}
-                            >
-                                <Tooltip content="Go back" delay={3000}>
-                                    <Button isIconOnly size="sm" variant="flat" onPress={() => paginate(-1)}>
-                                        <Icon
-                                            className="text-default-500"
-                                            icon="solar:alt-arrow-left-linear"
-                                            width={16}
-                                        />
-                                    </Button>
-                                </Tooltip>
-                            </m.div>
-                        )}
-                    </AnimatePresence>
-                    <AnimatePresence custom={direction} initial={false} mode="wait">
-                        <Title>{titleContent}</Title>
-                    </AnimatePresence>
-                </m.div>
-                <AnimatePresence custom={direction} initial={false} mode="wait">
-                    <m.form
-                        key={page}
-                        animate="center"
-                        className="flex flex-col gap-3"
-                        custom={direction}
-                        exit="exit"
-                        initial="enter"
-                        transition={{ duration: 0.2 }}
-                        variants={variants}
-                        onSubmit={handleSubmit}
-                    >
-                        {page === 0 && (
-                            <Input
-                                autoFocus
-                                isRequired
-                                label="Email Address"
-                                name="email"
-                                type="email"
-                                validationState={isEmailValid ? "valid" : "invalid"}
-                                value={email}
-                                onValueChange={(value) => {
-                                    setIsEmailValid(true);
-                                    setEmail(value);
-                                }}
-                            />
-                        )}
-                        {page === 1 && (
-                            <Input
-                                autoFocus
-                                isRequired
-                                endContent={
-                                    <button type="button" onClick={togglePasswordVisibility}>
-                                        {isPasswordVisible ? (
-                                            <Icon
-                                                className="pointer-events-none text-2xl text-default-400"
-                                                icon="solar:eye-closed-linear"
-                                            />
-                                        ) : (
-                                            <Icon
-                                                className="pointer-events-none text-2xl text-default-400"
-                                                icon="solar:eye-bold"
-                                            />
-                                        )}
-                                    </button>
-                                }
-                                label="Password"
-                                name="password"
-                                type={isPasswordVisible ? "text" : "password"}
-                                validationState={isPasswordValid ? "valid" : "invalid"}
-                                value={password}
-                                onValueChange={(value) => {
-                                    setIsPasswordValid(true);
-                                    setPassword(value);
-                                }}
-                            />
-                        )}
-                        {page === 2 && (
-                            <Input
-                                autoFocus
-                                isRequired
-                                endContent={
-                                    <button type="button" onClick={toggleConfirmPasswordVisibility}>
-                                        {isConfirmPasswordVisible ? (
-                                            <Icon
-                                                className="pointer-events-none text-2xl text-default-400"
-                                                icon="solar:eye-closed-linear"
-                                            />
-                                        ) : (
-                                            <Icon
-                                                className="pointer-events-none text-2xl text-default-400"
-                                                icon="solar:eye-bold"
-                                            />
-                                        )}
-                                    </button>
-                                }
-                                errorMessage={!isConfirmPasswordValid ? "Passwords do not match" : undefined}
-                                label="Confirm Password"
-                                name="confirmPassword"
-                                type={isConfirmPasswordVisible ? "text" : "password"}
-                                validationState={isConfirmPasswordValid ? "valid" : "invalid"}
-                                value={confirmPassword}
-                                onValueChange={(value) => {
-                                    setIsConfirmPasswordValid(true);
-                                    setConfirmPassword(value);
-                                }}
-                            />
-                        )}
-                        <Button fullWidth color="primary" type="submit">
-                            {page === 0
-                                ? "Continue with Email"
-                                : page === 1
-                                    ? "Enter Password"
-                                    : "Confirm Password"}
+                        <Controller
+                            control={control}
+                            name="email"
+                            render={({ field: { name, value, onChange, onBlur, ref }, fieldState: { invalid, error } }) => (
+                                <Input
+                                    ref={ref}
+                                    isInvalid={invalid}
+                                    errorMessage={error?.message}
+                                    isRequired
+                                    label="Email Address"
+                                    name={name}
+                                    value={value}
+                                    placeholder="Enter your email"
+                                    type="email"
+                                    variant="bordered"
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                />
+                            )}
+                            rules={{ required: "Email is required." }}
+                        />
+
+                        <Controller
+                            control={control}
+                            name="password"
+                            render={({ field: { name, value, onChange, onBlur, ref }, fieldState: { invalid, error } }) => (
+                                <Input
+                                    ref={ref}
+                                    isInvalid={invalid}
+                                    errorMessage={error?.message}
+                                    isRequired
+                                    endContent={
+                                        <button type="button" onClick={toggleVisibility}>
+                                            {isVisible ? (
+                                                <Icon
+                                                    className="pointer-events-none text-2xl text-default-400"
+                                                    icon="solar:eye-closed-linear"
+                                                />
+                                            ) : (
+                                                <Icon
+                                                    className="pointer-events-none text-2xl text-default-400"
+                                                    icon="solar:eye-bold"
+                                                />
+                                            )}
+                                        </button>
+                                    }
+                                    label="Password"
+                                    name={name}
+                                    value={value}
+                                    placeholder="Enter your password"
+                                    type={isVisible ? "text" : "password"}
+                                    variant="bordered"
+                                    onBlur={onBlur}
+                                    onChange={onChange}
+                                />
+                            )}
+                            rules={{ required: "Password is required." }}
+                        />
+
+
+                        <Button className="w-full" color="primary" type="submit">
+                            Sign Up
                         </Button>
-                    </m.form>
-                </AnimatePresence>
-            </LazyMotion>
-            <p className="text-center text-small">
-                Already have an account?&nbsp;
-                <Link href="/login" size="sm">
-                    Log In
-                </Link>
-            </p>
+                    </Form>
+                    <div className="flex items-center gap-4">
+                        <Divider className="flex-1" />
+                        <p className="shrink-0 text-tiny text-default-500">OR</p>
+                        <Divider className="flex-1" />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <Button
+                            startContent={<Icon icon="flat-color-icons:google" width={24} />}
+                            variant="bordered"
+                        >
+                            Continue with Google
+                        </Button>
+                        <Button
+                            startContent={<Icon className="text-default-500" icon="fe:github" width={24} />}
+                            variant="bordered"
+                        >
+                            Continue with Github
+                        </Button>
+                    </div>
+                    <p className="text-center text-small">
+                        Already have an account?&nbsp;
+                        <Link href="#" size="sm">
+                            Log In
+                        </Link>
+                    </p>
+                </div>
+            </div>
         </>
     )
 }
