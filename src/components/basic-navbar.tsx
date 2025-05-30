@@ -13,11 +13,11 @@ import {
   NavbarMenuToggle,
   Link,
   Button,
-  Divider,
   cn,
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { AcmeIcon } from "./social";
+import { usePathname } from "next/navigation";
 
 
 const menuItems = [
@@ -33,6 +33,9 @@ const menuItems = [
 
 const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
   ({ classNames = {}, ...props }, ref) => {
+
+    const pathname = usePathname();
+
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     return (
@@ -61,12 +64,12 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
 
         {/* Center Content */}
         <NavbarContent justify="center">
-          <NavbarItem isActive className="data-[active='true']:font-medium[date-active='true']">
-            <Link aria-current="page" className="text-default-foreground" href="/" size="sm">
+          <NavbarItem isActive={pathname === "/"} className="data-[active='true']:font-medium[date-active='true']">
+            <Link aria-current="page" className="text-default-foreground " href="/" size="sm">
               Home
             </Link>
           </NavbarItem>
-          <NavbarItem>
+          {/* <NavbarItem>
             <Link className="text-default-500" href="#" size="sm">
               Features
             </Link>
@@ -85,7 +88,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
             <Link className="text-default-500" href="#" size="sm">
               Integrations
             </Link>
-          </NavbarItem>
+          </NavbarItem> */}
         </NavbarContent>
 
         {/* Right Content */}
@@ -96,7 +99,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
                 Login
               </Button>
             </Link>
-            <Link href="/register">
+            <Link href="/dashboard">
               <Button
                 className="bg-default-foreground font-medium text-background"
                 color="secondary"
@@ -104,7 +107,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
                 radius="full"
                 variant="flat"
               >
-                Registro
+                Dashboard
               </Button>
             </Link>
           </NavbarItem>
@@ -113,7 +116,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
         <NavbarMenuToggle className="text-default-400 md:hidden" />
 
         <NavbarMenu
-          className="top-[calc(var(--navbar-height)_-_1px)] max-h-fit bg-default-200/50 pb-6 pt-6 shadow-medium backdrop-blur-md backdrop-saturate-150 dark:bg-default-100/50"
+          className="top-[calc(var(--navbar-height)_-_1px)] max-h-full bg-zinc-950/50 pb-6 pt-6 shadow-medium backdrop-blur-md backdrop-saturate-150 "
           motionProps={{
             initial: { opacity: 0, y: -20 },
             animate: { opacity: 1, y: 0 },
@@ -130,18 +133,18 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
             </Button>
           </NavbarMenuItem>
           <NavbarMenuItem className="mb-4">
-            <Button fullWidth as={Link} className="bg-foreground text-background" href="/register">
-              Registro
+            <Button fullWidth as={Link} className="bg-foreground text-background" href="/dashboard">
+              Dashboard
             </Button>
           </NavbarMenuItem>
-          {menuItems.map((item, index) => (
+          {/* {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link className="mb-2 w-full text-default-500" href="#" size="md">
                 {item}
               </Link>
               {index < menuItems.length - 1 && <Divider className="opacity-50" />}
             </NavbarMenuItem>
-          ))}
+          ))} */}
         </NavbarMenu>
       </Navbar>
     );
