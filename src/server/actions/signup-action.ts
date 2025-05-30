@@ -25,7 +25,8 @@ export const registerAction = actionClient
                 password: hashedPassword,
             });
             return { ok: true, msg: `Su cuenta se ha creado exitosamente` };
-        } catch (error) {
+        } catch (e) {
+            console.log(e);
             return { ok: false, msg: 'Error al crear la cuenta' };
         }
     })
