@@ -1,12 +1,10 @@
-"use client"
+"use client";
+
 import React from "react";
-import { Button } from "@heroui/react";
-import { Icon } from "@iconify/react";
 import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 import BasicNavbar from "@/components/basic-navbar";
 import AppScreenshotSkewed from "@/components/app-screenshot-skewed";
 import FadeInImage from "@/components/fade-in-image";
-
 // import BasicNavbar from "./basic-navbar";
 // import FadeInImage from "./fade-in-image";
 // import AppScreenshotSkewed from "./app-screenshot-skewed";

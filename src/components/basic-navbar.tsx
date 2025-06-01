@@ -18,6 +18,7 @@ import {
 import { Icon } from "@iconify/react";
 import { AcmeIcon } from "./social";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 
 const menuItems = [
@@ -33,6 +34,7 @@ const menuItems = [
 
 const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
   ({ classNames = {}, ...props }, ref) => {
+    const { data: session } = useSession();
 
     const pathname = usePathname();
 
@@ -99,7 +101,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
                 Login
               </Button>
             </Link>
-            <Link href="/dashboard">
+            {!session ? null : <Link href="/dashboard">
               <Button
                 className="bg-default-foreground font-medium text-background"
                 color="secondary"
@@ -109,7 +111,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
               >
                 Dashboard
               </Button>
-            </Link>
+            </Link>}
           </NavbarItem>
         </NavbarContent>
 

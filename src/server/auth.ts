@@ -4,7 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { loginSchema } from '@/types/login-schema';
 import bcrypt from 'bcryptjs';
 import { db } from '.';
-import { ExtendUser } from '../../next-auth';
+// import { ExtendUser } from '../../next-auth';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     adapter: DrizzleAdapter(db),
