@@ -1,6 +1,13 @@
+import { auth } from "@/server/auth";
 import LoginForm from "./ui/LoginForm";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+    const session = await auth();
+
+    if (session) {
+        return redirect('/');
+    }
     return (
         <div className="w-screen h-screen p-8 flex items-start justify-center">
             <div className="flex h-full w-full items-center justify-center">

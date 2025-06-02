@@ -1,6 +1,14 @@
 import RegisterForm from "./ui/RegisterForm";
+import { auth } from "@/server/auth";
+import { redirect } from "next/navigation";
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+    const session = await auth();
+
+    if (session) {
+        return redirect('/');
+    }
+
     return (
         <div className="w-screen h-screen p-8 flex items-start justify-center">
             <div className="flex h-full w-full items-center justify-center">
