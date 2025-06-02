@@ -7,9 +7,11 @@ export default async function DashboardPage() {
     // if (!session) {
     //     return redirect('/login');
     // }
-    return (
-        <>
-            <h1>Dashboard</h1>
-        </>
-    );
+
+    redirect("/dashboard/home")
+    // return (
+    //     <>
+    //         <h1 className="text-white ">Dashboard</h1>
+    //     </>
+    // );
 }

@@ -23,6 +23,7 @@ export default function DashboardLayout({
         <>
             <div>
                 <SidebarMobil />
+
                 {/* Static sidebar for desktop */}
                 <Sidebar />
 
@@ -34,11 +35,11 @@ export default function DashboardLayout({
                         <div aria-hidden="true" className="h-6 w-px bg-zinc-900/10 lg:hidden" />
 
                         <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                            <div className="flex items-center gap-x-4 lg:gap-x-6">
-                                <button type="button" className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
+                            <div className="flex items-center justify-end gap-x-4 lg:gap-x-6 flex-1">
+                                {/* <button type="button" className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
                                     <span className="sr-only">View notifications</span>
                                     <BellIcon aria-hidden="true" className="size-6" />
-                                </button>
+                                </button> */}
 
                                 {/* Separator */}
                                 <div aria-hidden="true" className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10" />
@@ -53,8 +54,8 @@ export default function DashboardLayout({
                                             className="size-8 rounded-full bg-gray-50"
                                         />
                                         <span className="hidden lg:flex lg:items-center">
-                                            <span aria-hidden="true" className="ml-4 text-sm/6 font-semibold text-gray-900">
-                                                Tom Cook
+                                            <span aria-hidden="true" className="ml-4 text-sm/6 font-semibold text-gray-50">
+                                                Milthon
                                             </span>
                                             <ChevronDownIcon aria-hidden="true" className="ml-2 size-5 text-gray-400" />
                                         </span>
