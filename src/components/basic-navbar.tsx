@@ -21,21 +21,10 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 
-const menuItems = [
-  "About",
-  "Blog",
-  "Customers",
-  "Pricing",
-  "Enterprise",
-  "Changelog",
-  "Documentation",
-  "Contact Us",
-];
-
 const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
   ({ classNames = {}, ...props }, ref) => {
     const { data: session } = useSession();
-
+    // console.log(session);
     const pathname = usePathname();
 
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);

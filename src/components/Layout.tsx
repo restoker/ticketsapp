@@ -8,7 +8,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <SessionProvider>
             <HeroUIProvider>
                 <ToastProvider />
-                <div className='dark'>
+                <div className='dark text-foreground bg-background'>
                     {children}
                 </div>
             </HeroUIProvider>

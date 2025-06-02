@@ -1,8 +1,15 @@
 'use client';
-import React, { useState } from 'react'
-import { Button, Input, Link, Divider, ResizablePanel, Form } from "@heroui/react";
+import React, { useEffect, useState } from 'react'
+import { Button, Input, Link, Divider, ResizablePanel, Form, addToast } from "@heroui/react";
 import { AnimatePresence, m, domAnimation, LazyMotion } from "framer-motion";
 import { Icon } from "@iconify/react";
+import { loginSchema } from '@/types/login-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { useAction } from 'next-safe-action/hooks';
+import { loginAction } from '@/server/actions/login-action';
+import { useRouter } from 'next/navigation';
 
 const orDivider = (
     <div className="flex items-center gap-4 py-2">
@@ -13,6 +20,8 @@ const orDivider = (
 );
 
 const LoginForm = () => {
+    const router = useRouter();
+    const [reveal, setReveal] = useState(true);
     const [isFormVisible, setIsFormVisible] = useState(false);
 
     const variants = {
@@ -20,13 +29,112 @@ const LoginForm = () => {
         hidden: { opacity: 0, y: 10 },
     };
 
+    const { handleSubmit, control } = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
+        mode: 'all',
+        defaultValues: {
+            email: '',
+            password: '',
+        }
+    });
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const { execute, result, status } = useAction(loginAction, {
+        onSuccess: ({ data }) => {
+            if (data) {
+                if (data.ok) {
+                    addToast({
+                        title: data.msg,
+                        timeout: 4000,
+                        shouldShowTimeoutProgress: true,
+                        color: 'success',
+                        classNames: {
+                            closeButton: "opacity-100 absolute right-4 top-1/2 -translate-y-1/2",
+                        },
+                        closeIcon: (
+                            <svg
+                                fill="none"
+                                height="32"
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                                width="32"
+                            >
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        ),
+                    });
+                    window.location.replace('/');
+                    // router.replace('/');
+                } else {
+                    addToast({
+                        title: data.msg,
+                        timeout: 4000,
+                        shouldShowTimeoutProgress: true,
+                        color: 'danger',
+                        classNames: {
+                            closeButton: "opacity-100 absolute right-4 top-1/2 -translate-y-1/2",
+                        },
+                        closeIcon: (
+                            <svg
+                                fill="none"
+                                height="32"
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                                width="32"
+                            >
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        ),
+                    });
+                }
+            }
+        },
+    });
 
-        console.log("handleSubmit");
-    };
+    useEffect(() => {
+        if (status === 'idle') return;
+        if (result.data?.ok) {
+            // redirect('/');
+            router.replace('/');
+        } else {
+            addToast({
+                title: result.data?.msg || 'Something went wrong',
+                timeout: 4000,
+                shouldShowTimeoutProgress: true,
+                color: 'danger',
+                classNames: {
+                    closeButton: "opacity-100 absolute right-4 top-1/2 -translate-y-1/2",
+                },
+                closeIcon: (
+                    <svg
+                        fill="none"
+                        height="32"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        width="32"
+                    >
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                ),
+            });
+        }
 
+    }, [result]);
+
+    const onSubmit = (data: z.infer<typeof loginSchema>) => {
+        execute(data)
+    }
 
     return (
         <>
@@ -43,23 +151,48 @@ const LoginForm = () => {
                                 variants={variants}
                                 onSubmit={(e) => e.preventDefault()}
                             >
-                                <Form validationBehavior="native" onSubmit={handleSubmit}>
-                                    <Input
-                                        autoFocus
-                                        isRequired
-                                        label="Email Address"
+                                <Form validationBehavior="native" onSubmit={handleSubmit(onSubmit)}>
+                                    <Controller
+                                        control={control}
                                         name="email"
-                                        type="email"
-                                        variant="bordered"
+                                        render={({ field: { name, value, onChange, onBlur, ref }, fieldState: { invalid, error } }) => (
+                                            <Input
+                                                ref={ref}
+                                                isInvalid={invalid}
+                                                errorMessage={error?.message}
+                                                isRequired
+                                                label="Email Address"
+                                                name={name}
+                                                value={value}
+                                                type="email"
+                                                variant="bordered"
+                                                onBlur={onBlur}
+                                                onChange={onChange}
+                                            />
+                                        )}
+                                        rules={{ required: "Email is required." }}
                                     />
-                                    <Input
-                                        isRequired
-                                        label="Password"
+                                    <Controller
+                                        control={control}
                                         name="password"
-                                        type="password"
-                                        variant="bordered"
+                                        render={({ field: { name, value, onChange, onBlur, ref }, fieldState: { invalid, error } }) => (
+                                            <Input
+                                                ref={ref}
+                                                isInvalid={invalid}
+                                                errorMessage={error?.message}
+                                                isRequired
+                                                label="Password"
+                                                name={name}
+                                                value={value}
+                                                type="password"
+                                                variant="bordered"
+                                                onBlur={onBlur}
+                                                onChange={onChange}
+                                            />
+                                        )}
+                                        rules={{ required: "Password is required." }}
                                     />
-                                    <Button className="w-full" color="primary" type="submit">
+                                    <Button disabled={status === 'executing'} className="w-full" color="primary" type="submit">
                                         Log In
                                     </Button>
                                 </Form>
@@ -76,7 +209,7 @@ const LoginForm = () => {
                                     variant="flat"
                                     onPress={() => setIsFormVisible(false)}
                                 >
-                                    Other Login options
+                                    Otras opciones
                                 </Button>
                             </m.div>
                         ) : (
@@ -90,7 +223,7 @@ const LoginForm = () => {
                                     type="button"
                                     onPress={() => setIsFormVisible(true)}
                                 >
-                                    Continue with Email
+                                    Continuar con Email
                                 </Button>
                                 {orDivider}
                                 <m.div
@@ -106,7 +239,7 @@ const LoginForm = () => {
                                             startContent={<Icon icon="flat-color-icons:google" width={24} />}
                                             variant="flat"
                                         >
-                                            Continue with Google
+                                            Continuar con Google
                                         </Button>
                                         <Button
                                             fullWidth
@@ -115,13 +248,13 @@ const LoginForm = () => {
                                             }
                                             variant="flat"
                                         >
-                                            Continue with Github
+                                            Continuar con Github
                                         </Button>
                                     </div>
                                     <p className="mt-3 text-center text-small">
-                                        Need to create an account?&nbsp;
+                                        ¿Necesitas crear una cuenta?&nbsp;
                                         <Link href="/register" size="sm">
-                                            Sign Up
+                                            Registrate
                                         </Link>
                                     </p>
                                 </m.div>
