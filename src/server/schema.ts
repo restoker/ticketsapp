@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { pgEnum, pgTable, serial, text, integer, timestamp } from "drizzle-orm/pg-core";
 
 export const RoleEnum = pgEnum("roles", ["user", "agent", "admin"]);
@@ -18,10 +19,11 @@ export const tickets = pgTable("tickets", {
     id: serial("id").primaryKey(),
     title: text("title").notNull(),
     description: text("description").notNull(),
-    status: StatusEnum('status').notNull().default("open"),
-    priority: PriorityEnum("priority").notNull().default("low"),
+    status: StatusEnum('status').default("open"),
+    priority: PriorityEnum("priority").default("low"),
     clientId: integer("clientId").notNull().references(() => users.id, { onDelete: 'cascade' }),
-    agentId: integer("agentId").notNull().references(() => users.id, { onDelete: 'cascade' }),
+    clientMail: text("clientMail").notNull(),
+    agentId: integer("agentId").references(() => users.id, { onDelete: 'cascade' }),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").defaultNow(),
 });
@@ -35,6 +37,36 @@ export const ticketComments = pgTable("ticket_comments", {
     updatedAt: timestamp("updatedAt").defaultNow(),
 });
 
+export const usersRelations = relations(users, ({ one, many }) => ({
+    ticketsClient: many(tickets, { relationName: 'ticketsClient' }),
+    ticketsAgent: many(tickets, { relationName: 'ticketsAgent' }),
+    ticketComments: many(ticketComments, { relationName: 'userTicketComments' }),
+}));
 
+export const ticketsRelations = relations(tickets, ({ one, many }) => ({
+    client: one(users, {
+        fields: [tickets.clientId],
+        references: [users.id],
+        relationName: 'ticketsClient',
+    }),
+    agent: one(users, {
+        fields: [tickets.agentId],
+        references: [users.id],
+        relationName: 'ticketsAgent',
+    }),
+    ticketComments: many(ticketComments, { relationName: 'ticketComments' }),
+}));
 
+export const ticketCommentsRelations = relations(ticketComments, ({ one }) => ({
+    tickets: one(tickets, {
+        fields: [ticketComments.ticketId],
+        references: [tickets.id],
+        relationName: 'ticketComments',
+    }),
+    users: one(users, {
+        fields: [ticketComments.userId],
+        references: [users.id],
+        relationName: 'userTicketComments',
+    }),
+}));
 

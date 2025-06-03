@@ -4,6 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { loginSchema } from '@/types/login-schema';
 import bcrypt from 'bcryptjs';
 import { db } from '.';
+import { eq } from 'drizzle-orm';
 // import { ExtendUser } from '../../next-auth';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -13,18 +14,38 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         strategy: 'jwt',
     },
     callbacks: {
-        // authorized({ auth, request: { nextUrl } }) {
-        // console.log(auth);
-        // const isLoggedIn = !!auth?.user;
-        // const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-        // if (isOnDashboard) {
-        //     if (isLoggedIn) return true;
-        //     return false; // Redirect unauthenticated users to login page
-        // } else if (isLoggedIn) {
-        //     return Response.redirect(new URL('/dashboard', nextUrl));
-        // }
-        // return true;
-        // },
+        async jwt({ token, user }) {
+            if (!token.sub) return token;
+            const existUser = await db.query.users.findFirst({
+                where: (users, { eq }) => eq(users.id, Number(token.sub))
+            })
+            if (!existUser) return token;
+            // if (user) {
+            //     token.isOauth = !!existsAccount;
+            //     return token
+            // }
+            // console.log(existsAccount);
+            token.name = existUser.name;
+            token.email = existUser.email;
+            token.role = existUser.role;
+
+            return token;
+
+        },
+        async session({ session, user, token }) {
+            console.log(user);
+            if (session && token.sub) {
+                session.user.id = token.sub;
+            }
+            if (session.user && token.role) {
+                session.user.role = token.role as "user" | "agent" | "admin";
+            }
+            if (session.user) {
+                session.user.name = token.name as string;
+                session.user.email = token.email as string;
+            }
+            return session;
+        },
     },
     providers: [
         Credentials({

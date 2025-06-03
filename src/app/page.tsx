@@ -44,7 +44,7 @@ export default function Home() {
                 kick: { width: "auto" },
               }}
             >
-              <AnimatePresence mode="wait">
+              <AnimatePresence>
                 <m.div
                   key={1}
                   animate={{ filter: "blur(0px)", opacity: 1, x: 0 }}
@@ -117,7 +117,7 @@ export default function Home() {
         </section>
       </main>
       <LazyMotion features={domAnimation}>
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           <m.div
             animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
             className="absolute top-[40%] w-full"
