@@ -27,3 +27,42 @@ body {
   /* color: var(--foreground); */
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(26, 104, 207) rgb(69, 74, 74);
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(69, 74, 74);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(15, 135, 214);
+  border-radius: 50%;
+  border: 3px solid rgb(69, 74, 74);
+}
+
+::-webkit-scrollbar-thumb {
+  animation: scroll-animation 5s infinite;
+}
+
+@keyframes scroll-animation {
+  0% {
+    background-color: #111111;
+  }
+
+  50% {
+    background-color: #555;
+  }
+
+  100% {
+    background-color: #888a88;
+  }
+}

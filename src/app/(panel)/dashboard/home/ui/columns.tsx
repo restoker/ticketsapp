@@ -96,9 +96,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
         header: 'Actions',
         cell: ({ row }) => {
             // const product = row.original;
-
             // const openModal = modalStore(state => state.openModal);
-
             return (
                 <DropdownMenu>
                     <DropdownTrigger>

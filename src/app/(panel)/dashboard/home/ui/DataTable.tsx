@@ -30,7 +30,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         }
     })
 
-
     return (
         <>
             <div className="h-full w-full">
