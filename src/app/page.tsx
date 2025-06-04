@@ -11,7 +11,7 @@ import FadeInImage from "@/components/fade-in-image";
 
 export default function Home() {
   return (
-    <div className="relative flex h-screen min-h-dvh w-full flex-col overflow-hidden bg-background">
+    <div className="relative flex h-full min-h-dvh w-full flex-col overflow-hidden bg-background">
       <BasicNavbar />
       <main className="container mx-auto mt-[80px] flex max-w-[1024px] flex-col items-start px-8">
         <section className="z-20 flex flex-col items-start justify-center gap-[18px] sm:gap-6">

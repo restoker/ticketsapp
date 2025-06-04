@@ -24,14 +24,14 @@ export default async function DashboardLayout({
 
     return (
         <>
-            <div>
+            <div className="">
                 <SidebarMobil />
 
                 {/* Static sidebar for desktop */}
                 <Sidebar />
 
                 <div className="lg:pl-72">
-                    <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-zinc-200 px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8">
+                    <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-zinc-200 px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-lg">
                         <ButtonMenu />
 
                         {/* Separator */}
@@ -65,7 +65,7 @@ export default async function DashboardLayout({
                                     </MenuButton>
                                     <MenuItems
                                         transition
-                                        className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 ring-1 shadow-lg ring-gray-900/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+                                        className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md py-2 ring-1 shadow-lg ring-gray-900/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in bg-white backdrop-blur-lg"
                                     >
                                         <MenuPerfil />
                                     </MenuItems>
@@ -74,10 +74,9 @@ export default async function DashboardLayout({
                         </div>
                     </div>
 
-                    <main className="py-10">
+                    <main className="py-10 h-full">
                         <div className="px-4 sm:px-6 lg:px-8">
                             {/* Your content */}
-
                             {children}
                         </div>
                     </main>

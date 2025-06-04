@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react'
-import { Button, Input } from "@heroui/react";
+import { Button, Input, TableColumn } from "@heroui/react";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@heroui/react";
 import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, SortingState, useReactTable } from '@tanstack/react-table';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
@@ -11,7 +11,6 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
 }
-
 
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
 
@@ -34,7 +33,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
     return (
         <>
-            <div>
+            <div className="h-full w-full">
                 <div>
                     <Input
                         className="w-60"
@@ -46,41 +45,45 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
+                            <TableHeader key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHeader className="border-x-zinc-900/10 border" key={header.id}>
-                                            {header.isPlaceholder ? '' : flexRender(
+                                        <TableColumn className="border-x-zinc-900/10 border" key={header.id}>
+                                            {header.isPlaceholder ? null : flexRender(
                                                 header.column.columnDef.header,
                                                 header.getContext()
                                             )}
-                                        </TableHeader>
+                                        </TableColumn>
                                     )
                                 })}
-                            </TableRow>
+                            </TableHeader>
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell className="text-center lg:w-[100px] xl:w-[200px] text-ellipsis text-sm border-x-zinc-900/10 border" key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </TableCell>
-                                    ))}
+                        {table.getRowModel().rows?.length
+                            ?
+                            (
+                                table.getRowModel().rows.map((row) => (
+                                    <TableRow
+                                        key={row.id}
+                                        data-state={row.getIsSelected() && "selected"}
+                                    >
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell className="text-center lg:w-[100px] xl:w-[200px] text-ellipsis text-sm border-x-zinc-900/10 border" key={cell.id}>
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))
+                            )
+                            :
+                            (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results 😥.
+                                    </TableCell>
                                 </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results 😥.
-                                </TableCell>
-                            </TableRow>
-                        )}
+                            )}
                     </TableBody>
                 </Table>
                 {/* botones para next and previous page */}

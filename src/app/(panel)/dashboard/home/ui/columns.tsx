@@ -1,12 +1,11 @@
-"use client"
-
+"use client";
 
 import { ColumnDef } from "@tanstack/react-table"
 // import Link from "next/link";
 import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline";
 import { Button, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 
-export type TicketColumn = {
+type TicketColumn = {
     id: number;
     title: string;
     creado: string;
@@ -102,7 +101,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
 
             return (
                 <DropdownMenu>
-                    <DropdownTrigger asChild>
+                    <DropdownTrigger>
                         <Button variant={"ghost"} className="h-8 w-8 bg-transparent" size={'sm'}>
                             <EllipsisHorizontalCircleIcon className="h-4 w-4 cursor-pointer" />
                         </Button>
@@ -134,31 +133,3 @@ export const columns: ColumnDef<TicketColumn>[] = [
         }
     }
 ]
-
-
-// id: "actions",
-// cell: ({ row }) => {
-//     const payment = row.original
-
-//     return (
-//         <DropdownMenu>
-//             <DropdownMenuTrigger asChild>
-//                 <Button variant="ghost" className="h-8 w-8 p-0">
-//                     <span className="sr-only">Open menu</span>
-//                     <MoreHorizontal className="h-4 w-4" />
-//                 </Button>
-//             </DropdownMenuTrigger>
-//             <DropdownMenuContent align="end">
-//                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-//                 <DropdownMenuItem
-//                     onClick={() => navigator.clipboard.writeText(payment.id)}
-//                 >
-//                     Copy payment ID
-//                 </DropdownMenuItem>
-//                 <DropdownMenuSeparator />
-//                 <DropdownMenuItem>View customer</DropdownMenuItem>
-//                 <DropdownMenuItem>View payment details</DropdownMenuItem>
-//             </DropdownMenuContent>
-//         </DropdownMenu>
-//     )
-// },

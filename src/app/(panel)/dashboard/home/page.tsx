@@ -1,10 +1,10 @@
 // import TableComponent from "./ui/TableComponent";
 
 import { db } from "@/server";
-import { columns } from "./ui/columns";
 import { auth } from "@/server/auth";
 import { redirect } from "next/navigation";
 import { DataTable } from "./ui/DataTable";
+import { columns } from "./ui/columns";
 
 
 const statuses = { Completed: 'text-green-400 bg-green-400/10', Error: 'text-rose-400 bg-rose-400/10' };
@@ -123,15 +123,15 @@ export default async function HomePage() {
         return redirect('/login');
     }
     console.log(session.user);
-    const idUser = session.user.id;
     // get tickets of user
     const tickets = await db.query.tickets.findMany({
         where: (tickets, { eq }) => eq(tickets.clientMail, session.user.email),
         with: {
-            client: true,
             agent: true,
+            client: true,
         },
     });
+
     const dataTable = tickets.map((ticket) => ({
         id: ticket.id,
         title: ticket.title,
@@ -143,7 +143,7 @@ export default async function HomePage() {
     // console.log(dataTable);
 
     return (
-        <>
+        <div className="h-dvh w-full">
             {/* <TableComponent /> */}
             {/* <div className="bg-gray-900 py-10">
                 <h2 className="px-4 text-base/7 font-semibold text-white sm:px-6 lg:px-8">Latest activity</h2>
@@ -211,14 +211,11 @@ export default async function HomePage() {
                     </tbody>
                 </table>
             </div> */}
-            {dataTable.length > 0 ? (
-                <DataTable
-                    columns={columns}
-                    data={dataTable}
-                />
-            ) : (
-                <p>No tickets found</p>
-            )}
-        </>
+            <DataTable
+                columns={columns}
+                data={dataTable}
+            />
+
+        </div>
     );
 } 
