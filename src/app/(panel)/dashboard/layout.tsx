@@ -21,14 +21,14 @@ export default async function DashboardLayout({
     if (!session) {
         return redirect('/login');
     }
-
+    const user = session.user;
     return (
         <>
             <div className="">
                 <SidebarMobil />
 
                 {/* Static sidebar for desktop */}
-                <Sidebar />
+                <Sidebar user={user} />
 
                 <div className="lg:pl-72">
                     <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-zinc-200 px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-lg">

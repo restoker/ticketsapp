@@ -1,22 +1,11 @@
 
 import {
-    CalendarIcon,
-    ChartPieIcon,
     Cog6ToothIcon,
-    DocumentDuplicateIcon,
-    FolderIcon,
     HomeIcon,
     UsersIcon,
 } from '@heroicons/react/24/outline'
+import { ExtendUser } from '../../../../../next-auth';
 
-const navigation = [
-    { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-    { name: 'Team', href: '#', icon: UsersIcon, current: false },
-    { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-    { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-    { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-    { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
-];
 const teams = [
     { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
     { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
@@ -28,8 +17,39 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
 }
 
+interface Navigation {
+    name: string;
+    href: string;
+    icon: any;
+    current: boolean;
+}
 
-const Sidebar = () => {
+const Sidebar = ({ user }: { user: ExtendUser }) => {
+    // console.log(user);
+
+    let navigation: Navigation[] = [];
+
+    switch (user.role) {
+        case 'user':
+            navigation = [
+                { name: 'Home', href: '/dashboard', icon: HomeIcon, current: true },
+                { name: 'Crear ticket', href: '/dashboard/task', icon: UsersIcon, current: false },
+            ];
+            break;
+        case 'agent':
+            navigation = [
+                { name: 'Home', href: '/dashboard', icon: HomeIcon, current: true },
+                // { name: 'Crear ticket', href: '/dashboard/task', icon: UsersIcon, current: false },
+            ];
+            break;
+        case 'admin':
+            navigation = [
+                { name: 'Home', href: '/dashboard', icon: HomeIcon, current: true },
+                // { name: 'Crear ticket', href: '/dashboard/task', icon: UsersIcon, current: false },
+            ];
+            break;
+    }
+
     return (
         <>
             <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">

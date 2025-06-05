@@ -30,15 +30,15 @@ const TaskForm = (props: CardProps & { email: string, name: string }) => {
         onSuccess: ({ data }) => {
             if (data?.ok) {
                 addToast({
-                    title: result.data?.msg,
+                    title: data.msg,
                     timeout: 3000,
                     shouldShowTimeoutProgress: true,
                     color: 'success',
                     classNames: {
                         closeButton: "opacity-100 absolute right-4 top-1/2 -translate-y-1/2",
-                        title: "text-black",
                         content: "text-black",
                         description: "text-black",
+                        title: "text-black",
                     },
                     closeIcon: (
                         <svg
@@ -59,14 +59,14 @@ const TaskForm = (props: CardProps & { email: string, name: string }) => {
                 reset();
             } else {
                 addToast({
-                    title: result.data?.msg,
+                    title: data?.msg,
                     timeout: 3000,
                     shouldShowTimeoutProgress: true,
                     color: 'danger',
                     classNames: {
                         closeButton: "opacity-100 absolute right-4 top-1/2 -translate-y-1/2",
-                        title: "text-black",
                         content: "text-black",
+                        title: "text-black",
                         description: "text-black",
                     },
                     closeIcon: (
@@ -95,9 +95,9 @@ const TaskForm = (props: CardProps & { email: string, name: string }) => {
                 color: 'danger',
                 classNames: {
                     closeButton: "opacity-100 absolute right-4 top-1/2 -translate-y-1/2",
-                    title: "text-black",
                     content: "text-black",
                     description: "text-black",
+                    title: "text-black",
                 },
                 closeIcon: (
                     <svg
@@ -128,7 +128,7 @@ const TaskForm = (props: CardProps & { email: string, name: string }) => {
     });
 
     const onSubmit = (data: any) => {
-        console.log(data);
+        // console.log(data);
         execute(data);
     }
 
