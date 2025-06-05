@@ -3,8 +3,10 @@ import {
     Cog6ToothIcon,
     HomeIcon,
     UsersIcon,
+    TicketIcon,
 } from '@heroicons/react/24/outline'
 import { ExtendUser } from '../../../../../next-auth';
+import { cookies, headers } from 'next/headers';
 
 const teams = [
     { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
@@ -24,16 +26,21 @@ interface Navigation {
     current: boolean;
 }
 
-const Sidebar = ({ user }: { user: ExtendUser }) => {
+const Sidebar = async ({ user }: { user: ExtendUser }) => {
     // console.log(user);
-
+    const headerList = await headers();
+    const csrfToken = (await cookies()).getAll().find((cookie) => cookie.name === 'authjs.csrf-token')?.value;
+    const sessionToken = (await cookies()).getAll().find((cookie) => cookie.name === 'authjs.session-token')?.value;
+    const pathname = headerList.get("x-current-path");
+    console.log(csrfToken);
+    console.log(sessionToken);
     let navigation: Navigation[] = [];
 
     switch (user.role) {
         case 'user':
             navigation = [
                 { name: 'Home', href: '/dashboard', icon: HomeIcon, current: true },
-                { name: 'Crear ticket', href: '/dashboard/task', icon: UsersIcon, current: false },
+                { name: 'Crear ticket', href: '/dashboard/task', icon: TicketIcon, current: false },
             ];
             break;
         case 'agent':
@@ -45,7 +52,7 @@ const Sidebar = ({ user }: { user: ExtendUser }) => {
         case 'admin':
             navigation = [
                 { name: 'Home', href: '/dashboard', icon: HomeIcon, current: true },
-                // { name: 'Crear ticket', href: '/dashboard/task', icon: UsersIcon, current: false },
+                { name: 'usuarios', href: '/dashboard/users', icon: UsersIcon, current: false },
             ];
             break;
     }
@@ -58,8 +65,8 @@ const Sidebar = ({ user }: { user: ExtendUser }) => {
                     <div className="flex h-16 shrink-0 items-center">
                         <img
                             alt="Your Company"
-                            src="https://tailwindui.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                            className="h-8 w-auto"
+                            src="https://cdn.cosmos.so/a480584a-2c25-42f5-a380-b080f07e787a?format=jpeg"
+                            className="size-20 w-auto object-cover"
                         />
                     </div>
                     <nav className="flex flex-1 flex-col">

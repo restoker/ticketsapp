@@ -24,7 +24,6 @@ import { useSession } from "next-auth/react";
 const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
   ({ classNames = {}, ...props }, ref) => {
     const { data: session } = useSession();
-    // console.log(session);
     const pathname = usePathname();
 
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -48,7 +47,7 @@ const BasicNavbar = React.forwardRef<HTMLElement, NavbarProps>(
         {/* Left Content */}
         <NavbarBrand>
           <div className="rounded-full bg-default-foreground text-background">
-            <AcmeIcon size={34} />
+            <img src="https://cdn.cosmos.so/a480584a-2c25-42f5-a380-b080f07e787a?format=jpeg" alt="" className="size-20 w-auto object-cover" />
           </div>
           <span className="ml-2 text-small font-medium text-default-foreground">Task-Master</span>
         </NavbarBrand>

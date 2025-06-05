@@ -27,7 +27,7 @@ const RegisterForm = () => {
                 if (data.ok) {
                     addToast({
                         title: data.msg,
-                        timeout: 4000,
+                        timeout: 3000,
                         shouldShowTimeoutProgress: true,
                         color: 'success',
                         classNames: {
@@ -54,7 +54,7 @@ const RegisterForm = () => {
                 if (!data.ok) {
                     addToast({
                         title: data.msg,
-                        timeout: 4000,
+                        timeout: 3000,
                         shouldShowTimeoutProgress: true,
                         color: 'danger',
                         icon: (<svg height={24} viewBox="0 0 24 24" width={24}>
@@ -98,7 +98,7 @@ const RegisterForm = () => {
         onError: ({ error }) => {
             addToast({
                 title: error.serverError,
-                timeout: 4000,
+                timeout: 3000,
                 shouldShowTimeoutProgress: true,
                 color: 'danger',
                 icon: (<svg height={24} viewBox="0 0 24 24" width={24}>
@@ -158,7 +158,7 @@ const RegisterForm = () => {
         <>
             <div className="flex h-full w-full flex-col items-center justify-center">
                 <div className="flex flex-col items-center pb-6">
-                    <AcmeIcon size={60} />
+                    <img src="https://cdn.cosmos.so/a480584a-2c25-42f5-a380-b080f07e787a?format=jpeg" alt="" className="size-20 w-auto object-cover" />
                     <p className="text-xl font-medium">Crear una cuenta</p>
                     <p className="text-small text-default-500">para continuar con Task-master</p>
                 </div>
@@ -176,14 +176,14 @@ const RegisterForm = () => {
                                     label="Name"
                                     name={name}
                                     value={value}
-                                    placeholder="Enter your name"
+                                    placeholder="Ingresa tu nombre"
                                     type="text"
                                     variant="bordered"
                                     onBlur={onBlur}
                                     onChange={onChange}
                                 />
                             )}
-                            rules={{ required: "Name is required." }}
+                            rules={{ required: "El nombre es requerido." }}
                         />
 
                         <Controller
@@ -198,14 +198,14 @@ const RegisterForm = () => {
                                     label="Email Address"
                                     name={name}
                                     value={value}
-                                    placeholder="Enter your email"
+                                    placeholder="Ingresa tu email"
                                     type="email"
                                     variant="bordered"
                                     onBlur={onBlur}
                                     onChange={onChange}
                                 />
                             )}
-                            rules={{ required: "Email is required." }}
+                            rules={{ required: "El email es requerido." }}
                         />
 
                         <Controller
@@ -235,14 +235,14 @@ const RegisterForm = () => {
                                     label="Password"
                                     name={name}
                                     value={value}
-                                    placeholder="Enter your password"
+                                    placeholder="Ingresa tu contraseña"
                                     type={isVisible ? "text" : "password"}
                                     variant="bordered"
                                     onBlur={onBlur}
                                     onChange={onChange}
                                 />
                             )}
-                            rules={{ required: "Password is required." }}
+                            rules={{ required: "El password es requerido." }}
                         />
 
 
@@ -252,7 +252,7 @@ const RegisterForm = () => {
                             type="submit"
                             disabled={status === 'executing'}
                         >
-                            Sign Up
+                            Registrarse
                         </Button>
                     </Form>
                     <div className="flex items-center gap-4">
@@ -260,7 +260,7 @@ const RegisterForm = () => {
                         <p className="shrink-0 text-tiny text-default-500">OR</p>
                         <Divider className="flex-1" />
                     </div>
-                    <div className="flex flex-col gap-2">
+                    {/* <div className="flex flex-col gap-2">
                         <Button
                             startContent={<Icon icon="flat-color-icons:google" width={24} />}
                             variant="bordered"
@@ -273,11 +273,11 @@ const RegisterForm = () => {
                         >
                             Continue with Github
                         </Button>
-                    </div>
+                    </div> */}
                     <p className="text-center text-small">
-                        Already have an account?&nbsp;
-                        <Link href="#" size="sm">
-                            Log In
+                        Ya tienes una cuenta?&nbsp;
+                        <Link href="/login" size="sm">
+                            Iniciar sesión
                         </Link>
                     </p>
                 </div>

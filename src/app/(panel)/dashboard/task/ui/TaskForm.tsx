@@ -128,7 +128,6 @@ const TaskForm = (props: CardProps & { email: string, name: string }) => {
     });
 
     const onSubmit = (data: any) => {
-        // console.log(data);
         execute(data);
     }
 
@@ -223,11 +222,17 @@ const TaskForm = (props: CardProps & { email: string, name: string }) => {
                             <Button
                                 radius="full"
                                 variant="bordered"
-                                onClick={() => reset()}
+                                onPress={() => reset()}
+                                disabled={status === 'executing'}
                             >
                                 Cancelar
                             </Button>
-                            <Button color="primary" radius="full" type="submit">
+                            <Button
+                                color="primary"
+                                radius="full"
+                                type="submit"
+                                disabled={status === 'executing'}
+                            >
                                 Crear Ticket
                             </Button>
                         </div>
