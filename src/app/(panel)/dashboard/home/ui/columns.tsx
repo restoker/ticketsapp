@@ -3,7 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 // import Link from "next/link";
 import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline";
-import { Button, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 
 type TicketColumn = {
     id: number;
@@ -22,7 +22,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
         cell: ({ row }) => {
             const idProduct = row.getValue('id') as number;
             return (
-                <p className="line-clamp-1">{idProduct}</p>
+                <p className="line-clamp-1 w-20 flex bg-amber-300">{idProduct}</p>
             );
         }
     },
@@ -32,7 +32,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
         cell: ({ row }) => {
             const titleProduct = row.getValue('title') as string;
             return (
-                <p className="line-clamp-1">{titleProduct}</p>
+                <p className="line-clamp-1 flex">{titleProduct}</p>
             );
         }
     },
@@ -40,9 +40,9 @@ export const columns: ColumnDef<TicketColumn>[] = [
         accessorKey: 'creado',
         header: 'Created',
         cell: ({ row }) => {
-            const createdAt = row.getValue('createdAt') as string;
+            const createdAt = row.getValue('creado') as string;
             return (
-                <p className="line-clamp-1">{createdAt}</p>
+                <p className="line-clamp-1 flex">{createdAt}</p>
             );
         }
     },
@@ -52,7 +52,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
         cell: ({ row }) => {
             const priorityProduct = row.getValue('priority') as string;
             return (
-                <p className="line-clamp-1">{priorityProduct}</p>
+                <p className="line-clamp-1 flex">{priorityProduct}</p>
             );
         }
         // cell: ({ row }) => {
@@ -74,7 +74,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
         cell: ({ row }) => {
             const statusProduct = row.getValue('status') as string;
             return (
-                <p className="line-clamp-1">{statusProduct}</p>
+                <p className="line-clamp-1 flex">{statusProduct}</p>
             );
         }
         // cell: ({ row }) => {
@@ -98,34 +98,36 @@ export const columns: ColumnDef<TicketColumn>[] = [
             // const product = row.original;
             // const openModal = modalStore(state => state.openModal);
             return (
-                <DropdownMenu>
+                <Dropdown className="">
                     <DropdownTrigger>
-                        <Button variant={"ghost"} className="h-8 w-8 bg-transparent" size={'sm'}>
-                            <EllipsisHorizontalCircleIcon className="h-4 w-4 cursor-pointer" />
+                        <Button variant={"shadow"} className="h-8 w-8 bg-transparent" size={'sm'}>
+                            <EllipsisHorizontalCircleIcon className="size-7 cursor-pointer" />
                         </Button>
                     </DropdownTrigger>
-                    <DropdownMenu>
+                    <DropdownMenu aria-label="Action event example">
                         {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Profile</DropdownMenuItem>
-                        <DropdownMenuItem>Billing</DropdownMenuItem> */}
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>Profile</DropdownMenuItem>
+                            <DropdownMenuItem>Billing</DropdownMenuItem> */}
                         <DropdownItem
-                            key={'1'}
-                            className="dark:focus:bg-amber-500 focus:bg-amber-500/50 cursor-pointer"
+                            key={'edit'}
+                            className="cursor-pointer"
+                            color="default"
                         >
                             {/* <Link href={`/dashboard/addproduct?id=${product.id}`}> */}
                             Edit product
                             {/* </Link> */}
                         </DropdownItem>
                         <DropdownItem
-                            key={'2'}
-                            className="dark:focus:bg-destructive focus:bg-destructive/50 cursor-pointer"
+                            key={'delete'}
+                            className="text-red-500 cursor-pointer"
+                            color="danger"
                         // onClick={() => openModal(product.id)}
                         >
                             Delete product
                         </DropdownItem>
                     </DropdownMenu>
-                </DropdownMenu>
+                </Dropdown>
 
             )
         }

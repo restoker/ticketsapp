@@ -37,8 +37,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                     <Input
                         className="w-60"
                         placeholder="Filter products"
-                        value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
-                        onChange={(event) => table.getColumn('title')?.setFilterValue(event.target.value)}
+                        value={(table.getColumn('priority')?.getFilterValue() as string) ?? ''}
+                        onChange={(event) => table.getColumn('priority')?.setFilterValue(event.target.value)}
                     />
                 </div>
                 <Table>
