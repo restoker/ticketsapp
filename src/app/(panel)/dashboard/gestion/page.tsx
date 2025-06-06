@@ -24,9 +24,14 @@ export default async function GestionPage() {
         priority: ticket.priority as 'low' | 'medium' | 'high',
         status: ticket.status as 'open' | 'in_progress' | 'closed',
     }));
+    // obtener agentes para designar ticketsd
+    const usersAgent = await db.query.users.findMany({
+        where: (users, { eq }) => eq(users.role, 'agent'),
+    });
+    console.log(usersAgent);
     return (
-        <div>
-            <h1>Gestion</h1>
+        <div className="h-dvh w-full">
+            <h1 className="text-white text-3xl py-5">Gestion de tickets</h1>
             <DataTable columns={columns} data={ticketsData} />
         </div>
     );

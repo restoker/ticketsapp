@@ -63,9 +63,7 @@ export default async function HomePage() {
 
     return (
         <div className="h-dvh w-full">
-            {session.user.role === 'admin' && <h1 className="text-white text-3xl py-5">Gestiona los tickets</h1>}
-            {session.user.role === 'user' && <h1 className="text-white text-3xl py-5">Tickets creados</h1>}
-            {session.user.role === 'agent' && <h1 className="text-white text-3xl py-5">Tickets asignados</h1>}
+            <h1 className="text-white text-3xl py-5">Tickets creados</h1>
             <DataTable
                 columns={columns}
                 data={dataTable}

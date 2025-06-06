@@ -95,8 +95,8 @@ export const columns: ColumnDef<TicketColumn>[] = [
 
     },
     {
-        id: 'actions',
-        header: 'Actions',
+        id: 'agente',
+        header: 'Designar Agente',
         cell: ({ row }) => {
             // const product = row.original;
             // const openModal = modalStore(state => state.openModal);
@@ -118,7 +118,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
                             color="default"
                         >
                             {/* <Link href={`/dashboard/addproduct?id=${product.id}`}> */}
-                            Edit product
+                            Asignar agente
                             {/* </Link> */}
                         </DropdownItem>
                         <DropdownItem
@@ -127,7 +127,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
                             color="danger"
                         // onClick={() => openModal(product.id)}
                         >
-                            Delete product
+                            Cerrar ticket
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>

@@ -38,7 +38,7 @@ const Sidebar = async ({ user }: { user: ExtendUser }) => {
             break;
         case 'admin':
             navigation = [
-                { name: 'Home', href: '/dashboard/home', icon: 'HomeIcon', current: pathname === '/dashboard/home' },
+                { name: 'Gestion', href: '/dashboard/gestion', icon: 'HomeIcon', current: pathname === '/dashboard/gestion' },
                 { name: 'usuarios', href: '/dashboard/users', icon: 'UsersIcon', current: pathname === '/dashboard/users' },
             ];
             break;
