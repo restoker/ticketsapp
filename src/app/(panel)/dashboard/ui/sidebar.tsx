@@ -23,7 +23,6 @@ const Sidebar = async ({ user }: { user: ExtendUser }) => {
     const sessionToken = cookie.getAll().find((cookie) => cookie.name === 'authjs.session-token')?.value;
     const pathname = headerList.get('x-pathname');
     let navigation: Navigation[] = [];
-
     switch (user.role) {
         case 'user':
             navigation = [

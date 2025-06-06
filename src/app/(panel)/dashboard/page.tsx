@@ -7,11 +7,16 @@ export default async function DashboardPage() {
     if (!session) {
         return redirect('/login');
     }
+    const rol = session.user.role;
 
-    redirect("/dashboard/home")
-    // return (
-    //     <>
-    //         <h1 className="text-white ">Dashboard</h1>
-    //     </>
-    // );
+    if (rol === 'admin') {
+        redirect("/dashboard/gestion")
+    }
+    if (rol === 'user') {
+        redirect("/dashboard/home")
+    }
+    if (rol === 'agent') {
+        redirect("/dashboard/agent")
+    }
+
 }
