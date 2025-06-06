@@ -24,7 +24,6 @@ export default async function HomePage() {
     // console.log(tickets[0].createdAt);
     const dataTable = tickets.map((ticket) => {
         const createdAt = ticket.createdAt!.toISOString();
-        console.log(createdAt);
         return {
             id: ticket.id,
             title: ticket.title,

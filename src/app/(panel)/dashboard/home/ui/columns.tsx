@@ -41,8 +41,16 @@ export const columns: ColumnDef<TicketColumn>[] = [
         header: 'Created',
         cell: ({ row }) => {
             const createdAt = row.getValue('creado') as string;
+            const date = new Date(createdAt);
+            const options = {
+                weekday: "short",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            } as const;
+            const fecha = date.toLocaleDateString("es-PE", options);
             return (
-                <p className="line-clamp-1 flex">{createdAt}</p>
+                <p className="line-clamp-1 flex">{fecha}</p>
             );
         }
     },

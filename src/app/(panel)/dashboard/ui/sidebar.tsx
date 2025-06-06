@@ -1,13 +1,9 @@
 
 import {
     Cog6ToothIcon,
-    HomeIcon,
-    UsersIcon,
-    TicketIcon,
 } from '@heroicons/react/24/outline'
 import { ExtendUser } from '../../../../../next-auth';
 import { cookies, headers } from 'next/headers';
-import Link from 'next/link';
 import SidebarList from './SidebarList';
 
 export interface Navigation {

@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation';
 
 import {
-    Cog6ToothIcon,
     HomeIcon,
     UsersIcon,
     TicketIcon,
@@ -38,7 +37,9 @@ const SidebarList = ({ navigation }: { navigation: Navigation[] }) => {
                                     'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                                 )}
                             >
-                                {/* <item.icon aria-hidden="true" className="size-6 shrink-0" /> */}
+                                {item.icon === 'HomeIcon' && <HomeIcon aria-hidden="true" className="size-6 shrink-0" />}
+                                {item.icon === 'UsersIcon' && <UsersIcon aria-hidden="true" className="size-6 shrink-0" />}
+                                {item.icon === 'TicketIcon' && <TicketIcon aria-hidden="true" className="size-6 shrink-0" />}
                                 {item.name}
                             </Link>
                         </li>
