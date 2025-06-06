@@ -136,7 +136,7 @@ const TaskForm = (props: CardProps & { email: string, name: string }) => {
             <Card className="max-w-2xl p-2 bg-black" {...props}>
                 <CardHeader className="flex flex-col items-start px-4 pb-0 pt-4">
                     <p className="text-large">Crear Ticket</p>
-                    <div className="flex gap-4 py-4">
+                    {/* <div className="flex gap-4 py-4">
                         <Badge
                             showOutline
                             classNames={{
@@ -163,7 +163,7 @@ const TaskForm = (props: CardProps & { email: string, name: string }) => {
                             <p className="font-medium">{props.name}</p>
                             <span className="text-small text-default-500">{props.email}</span>
                         </div>
-                    </div>
+                    </div> */}
                     <p className="text-small text-default-400">
                         Agrega el titulo y la descripción del ticket, para designarlo a un agente y pueda resolverlo.
                     </p>

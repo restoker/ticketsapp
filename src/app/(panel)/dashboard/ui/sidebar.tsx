@@ -7,52 +7,44 @@ import {
 } from '@heroicons/react/24/outline'
 import { ExtendUser } from '../../../../../next-auth';
 import { cookies, headers } from 'next/headers';
+import Link from 'next/link';
+import SidebarList from './SidebarList';
 
-const teams = [
-    { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
-    { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-    { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
-];
-
-
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ');
-}
-
-interface Navigation {
+export interface Navigation {
     name: string;
     href: string;
-    icon: any;
+    icon: string;
     current: boolean;
 }
+
+
 
 const Sidebar = async ({ user }: { user: ExtendUser }) => {
     // console.log(user);
     const headerList = await headers();
-    const csrfToken = (await cookies()).getAll().find((cookie) => cookie.name === 'authjs.csrf-token')?.value;
-    const sessionToken = (await cookies()).getAll().find((cookie) => cookie.name === 'authjs.session-token')?.value;
-    const pathname = headerList.get("x-current-path");
-    console.log(csrfToken);
-    console.log(sessionToken);
+    const cookie = await cookies();
+    const csrfToken = cookie.getAll().find((cookie) => cookie.name === 'authjs.csrf-token')?.value;
+    const sessionToken = cookie.getAll().find((cookie) => cookie.name === 'authjs.session-token')?.value;
+    const pathname = headerList.get('x-pathname');
     let navigation: Navigation[] = [];
 
     switch (user.role) {
         case 'user':
             navigation = [
-                { name: 'Home', href: '/dashboard', icon: HomeIcon, current: true },
-                { name: 'Crear ticket', href: '/dashboard/task', icon: TicketIcon, current: false },
+                { name: 'Home', href: '/dashboard/home', icon: 'HomeIcon', current: pathname === '/dashboard/home' },
+                { name: 'Crear ticket', href: '/dashboard/task', icon: 'TicketIcon', current: pathname === '/dashboard/task' },
             ];
             break;
         case 'agent':
             navigation = [
-                { name: 'Home', href: '/dashboard', icon: HomeIcon, current: true },
+                { name: 'Home', href: '/dashboard/home', icon: 'HomeIcon', current: pathname === '/dashboard/home' },
                 // { name: 'Crear ticket', href: '/dashboard/task', icon: UsersIcon, current: false },
             ];
             break;
         case 'admin':
             navigation = [
-                { name: 'Home', href: '/dashboard', icon: HomeIcon, current: true },
-                { name: 'usuarios', href: '/dashboard/users', icon: UsersIcon, current: false },
+                { name: 'Home', href: '/dashboard/home', icon: 'HomeIcon', current: pathname === '/dashboard/home' },
+                { name: 'usuarios', href: '/dashboard/users', icon: 'UsersIcon', current: pathname === '/dashboard/users' },
             ];
             break;
     }
@@ -71,27 +63,8 @@ const Sidebar = async ({ user }: { user: ExtendUser }) => {
                     </div>
                     <nav className="flex flex-1 flex-col">
                         <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                            <li>
-                                <ul role="list" className="-mx-2 space-y-1">
-                                    {navigation.map((item) => (
-                                        <li key={item.name}>
-                                            <a
-                                                href={item.href}
-                                                className={classNames(
-                                                    item.current
-                                                        ? 'bg-gray-800 text-white'
-                                                        : 'text-gray-400 hover:bg-gray-800 hover:text-white',
-                                                    'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
-                                                )}
-                                            >
-                                                <item.icon aria-hidden="true" className="size-6 shrink-0" />
-                                                {item.name}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </li>
-                            <li>
+                            <SidebarList navigation={navigation} />
+                            {/* <li>
                                 <div className="text-xs/6 font-semibold text-gray-400">Your teams</div>
                                 <ul role="list" className="-mx-2 mt-2 space-y-1">
                                     {teams.map((team) => (
@@ -113,7 +86,7 @@ const Sidebar = async ({ user }: { user: ExtendUser }) => {
                                         </li>
                                     ))}
                                 </ul>
-                            </li>
+                            </li> */}
                             <li className="mt-auto">
                                 <a
                                     href="#"

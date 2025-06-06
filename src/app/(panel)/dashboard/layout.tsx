@@ -53,8 +53,8 @@ export default async function DashboardLayout({
                                         <span className="sr-only">Open user menu</span>
                                         <img
                                             alt=""
-                                            src="https://cdn.cosmos.so/dde4877d-e85f-4c63-8ad9-3006c13e3ccf?format=jpeg"
-                                            className="size-8 rounded-full bg-gray-50 object-cover"
+                                            src="https://cdn.cosmos.so/03c3c2be-9f18-4718-8a01-9c952941298b?format=jpeg"
+                                            className="size-10 rounded-full bg-gray-50 object-cover"
                                         />
                                         <span className="hidden lg:flex lg:items-center">
                                             <span aria-hidden="true" className="ml-4 text-sm/6 font-semibold text-gray-50">
