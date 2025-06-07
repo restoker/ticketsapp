@@ -50,7 +50,6 @@ export default async function HomePage() {
     if (!tickets) {
         return redirect('/dashboard/login');
     }
-    // console.log(tickets[0].createdAt);
     const dataTable = tickets.map((ticket) => {
         return {
             id: ticket.id,

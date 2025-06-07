@@ -17,18 +17,27 @@ export default async function GestionPage() {
             client: true,
         },
     });
+
+    const usersAgent = await db.query.users.findMany({
+        where: (users, { eq }) => eq(users.role, 'agent'),
+        columns: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+        }
+    });
+
     const ticketsData = tickets.map((ticket) => ({
         id: ticket.id,
         title: ticket.title,
         creado: ticket.createdAt!.toISOString(),
         priority: ticket.priority as 'low' | 'medium' | 'high',
         status: ticket.status as 'open' | 'in_progress' | 'closed',
+        agentes: usersAgent,
     }));
     // obtener agentes para designar ticketsd
-    const usersAgent = await db.query.users.findMany({
-        where: (users, { eq }) => eq(users.role, 'agent'),
-    });
-    console.log(usersAgent);
+
     return (
         <div className="h-dvh w-full">
             <h1 className="text-white text-3xl py-5">Gestion de tickets</h1>

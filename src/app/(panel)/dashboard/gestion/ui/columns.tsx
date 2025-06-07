@@ -1,9 +1,9 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table"
-// import Link from "next/link";
-import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Select, SelectItem } from "@heroui/react";
+import { Select, SelectItem } from "@heroui/react";
+import { Suspense } from "react";
+import Loading from "../loading";
 
 type TicketColumn = {
     id: number;
@@ -12,8 +12,9 @@ type TicketColumn = {
     priority: string;
     // description: string;
     status: string;
-
+    agentes: { id: number; name: string; role: "user" | "agent" | "admin"; email: string; }[];
 }
+
 
 export const columns: ColumnDef<TicketColumn>[] = [
     {
@@ -95,43 +96,25 @@ export const columns: ColumnDef<TicketColumn>[] = [
 
     },
     {
-        id: 'agente',
+        id: 'agentes',
         header: 'Designar Agente',
         cell: ({ row }) => {
-            // const product = row.original;
+            const agents = [...row.original.agentes];
             // const openModal = modalStore(state => state.openModal);
             return (
-                <Dropdown className="">
-                    <DropdownTrigger>
-                        <Button variant={"shadow"} className="h-8 w-8 bg-transparent" size={'sm'}>
-                            <EllipsisHorizontalCircleIcon className="size-7 cursor-pointer" />
-                        </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="Action event example">
-                        {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Profile</DropdownMenuItem>
-                            <DropdownMenuItem>Billing</DropdownMenuItem> */}
-                        <DropdownItem
-                            key={'edit'}
-                            className="cursor-pointer"
-                            color="default"
-                        >
-                            {/* <Link href={`/dashboard/addproduct?id=${product.id}`}> */}
-                            Asignar agente
-                            {/* </Link> */}
-                        </DropdownItem>
-                        <DropdownItem
-                            key={'delete'}
-                            className="text-red-500 cursor-pointer"
-                            color="danger"
-                        // onClick={() => openModal(product.id)}
-                        >
-                            Cerrar ticket
-                        </DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
-
+                <Suspense fallback={<Loading />}>
+                    <Select
+                        className="max-w-xs"
+                        items={agents}
+                        label="Agente"
+                        placeholder="Seleccionar agente"
+                        onChange={(value) => {
+                            console.log(value.target.value);
+                        }}
+                    >
+                        {(agent) => <SelectItem key={agent.id} className="">{agent.name}</SelectItem>}
+                    </Select>
+                </Suspense>
             )
         }
     }

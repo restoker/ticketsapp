@@ -1,6 +1,5 @@
 'use client';
 
-
 import React from 'react'
 import { Navigation } from './Sidebar'
 import Link from 'next/link'
@@ -19,8 +18,6 @@ function classNames(...classes: string[]) {
 
 const SidebarList = ({ navigation }: { navigation: Navigation[] }) => {
     const pathname = usePathname();
-
-    // console.log(pathname);
 
     return (
         <>

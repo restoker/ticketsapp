@@ -13,12 +13,9 @@ export default async function UsersPage() {
         where: (users, { eq }) => eq(users.role, 'agent'),
     });
 
-
-    // console.log(usersAgent);
-
     return (
-        <div>
-            <h1>Users</h1>
+        <div className="h-dvh w-full">
+            <h1 className="text-white text-3xl py-5">Users</h1>
         </div>
     );
 }
