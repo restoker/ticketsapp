@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 
 export const assignTaskAction = actionClient
     .schema(z.object({
-        id: z.string(),
+        id: z.number(),
         agentId: z.number(),
     }))
     .action(async ({ parsedInput: { id, agentId }, ctx: { } }) => {

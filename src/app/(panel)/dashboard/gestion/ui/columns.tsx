@@ -6,6 +6,7 @@ import { Suspense, useState } from "react";
 import Loading from "../loading";
 import { useAction } from "next-safe-action/hooks";
 import { assignTaskAction } from "@/server/actions/assign-task-action";
+import useAdminStore from "@/store/adminStore";
 
 type TicketColumn = {
     id: number;
@@ -68,18 +69,24 @@ export const columns: ColumnDef<TicketColumn>[] = [
                 { key: "high", label: "High" },
             ];
             const priority = row.getValue('priority') as string;
+            const [prioridad, setPrioridad] = useState(priority);
+            const { currentTicketId, setTicketId, setAgentId, setPriority } = useAdminStore();
+            const idTask = row.getValue('id') as number;
             // const openModal = modalStore(state => state.openModal);
             return (
                 <Select
                     className="max-w-xs"
                     items={priorityOptions}
                     label="Prioridad"
+                    isDisabled={currentTicketId === idTask ? false : true}
                     placeholder="Seleccionar prioridad"
-                    value={priority}
-                    color={priority === "low" ? "success" : priority === "medium" ? "warning" : "danger"}
-                    defaultSelectedKeys={[priority]}
+                    value={prioridad}
+                    color={prioridad === "low" ? "success" : prioridad === "medium" ? "warning" : "danger"}
+                    defaultSelectedKeys={[prioridad]}
                     onChange={(value) => {
-                        console.log(value);
+                        // console.log(value);
+                        setPrioridad(value.target.value);
+                        setPriority(value.target.value as 'low' | 'medium' | 'high');
                     }}
                 >
                     {(priorityOption) => <SelectItem className="">{priorityOption.label}</SelectItem>}
@@ -102,27 +109,29 @@ export const columns: ColumnDef<TicketColumn>[] = [
         id: 'agente',
         header: 'Designar Agente',
         cell: ({ cell, row }) => {
-            const [value, setValue] = useState<{ id: number, name: string }>({ id: 0, name: 'No asignado' })
+            const { currentTicketId, setTicketId, setAgentId, setPriority } = useAdminStore();
             const agents = [...row.original.agentes, { id: 0, name: 'No asignado' }];
-            // console.log(agents);
             const agent = row.original.agente;
-            // console.log(agent);
+            const [value, setValue] = useState<{ id: number, name: string }>(agent)
+            const idTask = row.getValue('id') as number;
+            // console.log(agents);
             // const openModal = modalStore(state => state.openModal);
             return (
                 <Suspense fallback={<Loading />}>
                     <Select
                         className="max-w-xs"
-                        // items={agents}
-                        disabled
+                        items={agents}
+                        isDisabled={currentTicketId === idTask ? false : true}
                         label="Agente"
                         placeholder="Seleccionar agente"
-                        // value={agent.name}
+                        value={value.name}
                         defaultSelectedKeys={[agent.id.toString()]}
                         onChange={(value) => {
                             setValue({
                                 id: Number(value.target.value),
                                 name: agents.find((agent) => agent.id === Number(value.target.value))?.name!,
                             });
+                            setAgentId(Number(value.target.value))
                         }}
                     >
                         {/* {(agent) => <SelectItem key={agent.id} className="">{agent.name}</SelectItem>} */}
@@ -140,16 +149,36 @@ export const columns: ColumnDef<TicketColumn>[] = [
         cell: ({ row }) => {
             const { execute, status, result } = useAction(assignTaskAction);
             const value = row.getValue('agente') as { id: number, name: string };
+            const { currentTicketId, priority, agentId, setTicketId, setAgentId, setPriority } = useAdminStore();
             return (
                 <div className="flex gap-2">
-                    <Button
-                        variant="bordered"
-                        size="md"
-                        onPress={() => execute({ id: '2', agentId: 2 })}
-                    // onPress={() => console.log(row.original)}
-                    >
-                        guardar
-                    </Button>
+                    {currentTicketId === row.getValue('id') ? (
+                        <Button
+                            variant="bordered"
+                            size="md"
+                            disabled={status === 'executing'}
+                            // onPress={() => execute({ id: 2, agentId: 2 })}
+                            onPress={() => {
+                                console.log(priority);
+                                console.log(agentId);
+                            }}
+                        >
+                            Guardar
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="bordered"
+                            size="md"
+                            disabled={status === 'executing'}
+                            // onPress={() => execute({ id: 2, agentId: 2 })}
+                            onPress={() => {
+                                setTicketId(row.getValue('id') as number);
+                            }}
+                        >
+                            Editar
+                        </Button>
+                    )}
+
                 </div>
             );
         },
