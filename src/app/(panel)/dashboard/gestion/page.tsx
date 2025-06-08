@@ -32,16 +32,19 @@ export default async function GestionPage() {
     });
 
     const ticketsData = tickets.map((ticket) => {
+        // console.log(ticket);
+        const agentId = !ticket.agent ? 0 : ticket.agent.id;
         return {
             id: ticket.id,
             title: ticket.title,
             creado: ticket.createdAt!.toISOString(),
             priority: ticket.priority as 'low' | 'medium' | 'high',
             status: ticket.status as 'open' | 'in_progress' | 'closed',
-            agente: !ticket.agent ? { id: 0, name: 'No asignado' } : ticket.agent,
+            agente: agentId,
             agentes: usersAgent,
         }
     });
+
     // obtener agentes para designar ticketsd
 
     return (

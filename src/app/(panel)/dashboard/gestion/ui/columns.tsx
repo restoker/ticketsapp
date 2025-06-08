@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table"
-import { Button, Select, SelectItem } from "@heroui/react";
+import { addToast, Button, Select, SelectItem } from "@heroui/react";
 import { Suspense, useState } from "react";
 import Loading from "../loading";
 import { useAction } from "next-safe-action/hooks";
@@ -13,7 +13,7 @@ type TicketColumn = {
     title: string;
     creado: string;
     priority: string;
-    agente: { id: number; name: string; };
+    agente: number;
     // description: string;
     status: string;
     agentes: { id: number; name: string; }[];
@@ -70,7 +70,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
             ];
             const priority = row.getValue('priority') as string;
             const [prioridad, setPrioridad] = useState(priority);
-            const { currentTicketId, setTicketId, setAgentId, setPriority } = useAdminStore();
+            const { currentTicketId, setPriority } = useAdminStore();
             const idTask = row.getValue('id') as number;
             // const openModal = modalStore(state => state.openModal);
             return (
@@ -106,16 +106,15 @@ export const columns: ColumnDef<TicketColumn>[] = [
 
     },
     {
-        id: 'agente',
+        accessorKey: 'agente',
         header: 'Designar Agente',
-        cell: ({ cell, row }) => {
-            const { currentTicketId, setTicketId, setAgentId, setPriority } = useAdminStore();
+        cell: ({ row }) => {
+            const { currentTicketId, setAgentId } = useAdminStore();
             const agents = [...row.original.agentes, { id: 0, name: 'No asignado' }];
-            const agent = row.original.agente;
-            const [value, setValue] = useState<{ id: number, name: string }>(agent)
+            const agente = row.getValue('agente') as number;
+            const currentAgent = agents.find((agent) => agent.id === agente);
+            const [value, setValue] = useState<string>(currentAgent?.id?.toString() || '0');
             const idTask = row.getValue('id') as number;
-            // console.log(agents);
-            // const openModal = modalStore(state => state.openModal);
             return (
                 <Suspense fallback={<Loading />}>
                     <Select
@@ -124,20 +123,14 @@ export const columns: ColumnDef<TicketColumn>[] = [
                         isDisabled={currentTicketId === idTask ? false : true}
                         label="Agente"
                         placeholder="Seleccionar agente"
-                        value={value.name}
-                        defaultSelectedKeys={[agent.id.toString()]}
+                        value={value}
+                        defaultSelectedKeys={[value]}
                         onChange={(value) => {
-                            setValue({
-                                id: Number(value.target.value),
-                                name: agents.find((agent) => agent.id === Number(value.target.value))?.name!,
-                            });
+                            setValue(value.target.value);
                             setAgentId(Number(value.target.value))
                         }}
                     >
-                        {/* {(agent) => <SelectItem key={agent.id} className="">{agent.name}</SelectItem>} */}
-                        {agents.map((agent) => (
-                            <SelectItem key={agent.id}>{agent.name}</SelectItem>
-                        ))}
+                        {(agent) => <SelectItem key={agent.id} className="">{agent.name}</SelectItem>}
                     </Select>
                 </Suspense>
             )
@@ -147,9 +140,62 @@ export const columns: ColumnDef<TicketColumn>[] = [
         id: 'actions',
         header: 'Acciones',
         cell: ({ row }) => {
-            const { execute, status, result } = useAction(assignTaskAction);
+            const { execute, status, result } = useAction(assignTaskAction, {
+                onSuccess: ({ data }) => {
+                    if (data?.ok) {
+                        addToast({
+                            title: "Exito",
+                            description: data.msg,
+                            variant: "bordered",
+                            color: "success",
+                            timeout: 3000,
+                            shouldShowTimeoutProgress: true,
+                            closeIcon: (
+                                <svg
+                                    fill="none"
+                                    height="32"
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    viewBox="0 0 24 24"
+                                    width="32"
+                                >
+                                    <path d="M18 6 6 18" />
+                                    <path d="m6 6 12 12" />
+                                </svg>
+                            ),
+                        })
+                    }
+                    if (!data?.ok) {
+                        addToast({
+                            title: "Error",
+                            description: 'No se pudo asignar el ticket',
+                            variant: "bordered",
+                            color: "danger",
+                            timeout: 3000,
+                            shouldShowTimeoutProgress: true,
+                            closeIcon: (
+                                <svg
+                                    fill="none"
+                                    height="32"
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    viewBox="0 0 24 24"
+                                    width="32"
+                                >
+                                    <path d="M18 6 6 18" />
+                                    <path d="m6 6 12 12" />
+                                </svg>
+                            ),
+                        })
+                    }
+                }
+            });
             const value = row.getValue('agente') as { id: number, name: string };
-            const { currentTicketId, priority, agentId, setTicketId, setAgentId, setPriority } = useAdminStore();
+            const { currentTicketId, priority, agentId, setTicketId, setAgentId, setPriority, cleanStore } = useAdminStore();
             return (
                 <div className="flex gap-2">
                     {currentTicketId === row.getValue('id') ? (
@@ -157,10 +203,13 @@ export const columns: ColumnDef<TicketColumn>[] = [
                             variant="bordered"
                             size="md"
                             disabled={status === 'executing'}
-                            // onPress={() => execute({ id: 2, agentId: 2 })}
                             onPress={() => {
-                                console.log(priority);
-                                console.log(agentId);
+                                // console.log(priority);
+                                // console.log(agentId);
+                                // console.log(currentTicketId);
+                                execute({ id: currentTicketId, agentId: agentId, priority });
+                                cleanStore();
+
                             }}
                         >
                             Guardar
