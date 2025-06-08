@@ -1,18 +1,21 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table"
-import { Select, SelectItem } from "@heroui/react";
-import { Suspense } from "react";
+import { Button, Select, SelectItem } from "@heroui/react";
+import { Suspense, useState } from "react";
 import Loading from "../loading";
+import { useAction } from "next-safe-action/hooks";
+import { assignTaskAction } from "@/server/actions/assign-task-action";
 
 type TicketColumn = {
     id: number;
     title: string;
     creado: string;
     priority: string;
+    agente: { id: number; name: string; };
     // description: string;
     status: string;
-    agentes: { id: number; name: string; role: "user" | "agent" | "admin"; email: string; }[];
+    agentes: { id: number; name: string; }[];
 }
 
 
@@ -96,26 +99,59 @@ export const columns: ColumnDef<TicketColumn>[] = [
 
     },
     {
-        id: 'agentes',
+        id: 'agente',
         header: 'Designar Agente',
-        cell: ({ row }) => {
-            const agents = [...row.original.agentes];
+        cell: ({ cell, row }) => {
+            const [value, setValue] = useState<{ id: number, name: string }>({ id: 0, name: 'No asignado' })
+            const agents = [...row.original.agentes, { id: 0, name: 'No asignado' }];
+            // console.log(agents);
+            const agent = row.original.agente;
+            // console.log(agent);
             // const openModal = modalStore(state => state.openModal);
             return (
                 <Suspense fallback={<Loading />}>
                     <Select
                         className="max-w-xs"
-                        items={agents}
+                        // items={agents}
+                        disabled
                         label="Agente"
                         placeholder="Seleccionar agente"
+                        // value={agent.name}
+                        defaultSelectedKeys={[agent.id.toString()]}
                         onChange={(value) => {
-                            console.log(value.target.value);
+                            setValue({
+                                id: Number(value.target.value),
+                                name: agents.find((agent) => agent.id === Number(value.target.value))?.name!,
+                            });
                         }}
                     >
-                        {(agent) => <SelectItem key={agent.id} className="">{agent.name}</SelectItem>}
+                        {/* {(agent) => <SelectItem key={agent.id} className="">{agent.name}</SelectItem>} */}
+                        {agents.map((agent) => (
+                            <SelectItem key={agent.id}>{agent.name}</SelectItem>
+                        ))}
                     </Select>
                 </Suspense>
             )
         }
+    },
+    {
+        id: 'actions',
+        header: 'Acciones',
+        cell: ({ row }) => {
+            const { execute, status, result } = useAction(assignTaskAction);
+            const value = row.getValue('agente') as { id: number, name: string };
+            return (
+                <div className="flex gap-2">
+                    <Button
+                        variant="bordered"
+                        size="md"
+                        onPress={() => execute({ id: '2', agentId: 2 })}
+                    // onPress={() => console.log(row.original)}
+                    >
+                        guardar
+                    </Button>
+                </div>
+            );
+        },
     }
 ]

@@ -13,7 +13,12 @@ export default async function GestionPage() {
 
     const tickets = await db.query.tickets.findMany({
         with: {
-            agent: true,
+            agent: {
+                columns: {
+                    id: true,
+                    name: true,
+                }
+            },
             client: true,
         },
     });
@@ -23,19 +28,20 @@ export default async function GestionPage() {
         columns: {
             id: true,
             name: true,
-            email: true,
-            role: true,
         }
     });
 
-    const ticketsData = tickets.map((ticket) => ({
-        id: ticket.id,
-        title: ticket.title,
-        creado: ticket.createdAt!.toISOString(),
-        priority: ticket.priority as 'low' | 'medium' | 'high',
-        status: ticket.status as 'open' | 'in_progress' | 'closed',
-        agentes: usersAgent,
-    }));
+    const ticketsData = tickets.map((ticket) => {
+        return {
+            id: ticket.id,
+            title: ticket.title,
+            creado: ticket.createdAt!.toISOString(),
+            priority: ticket.priority as 'low' | 'medium' | 'high',
+            status: ticket.status as 'open' | 'in_progress' | 'closed',
+            agente: !ticket.agent ? { id: 0, name: 'No asignado' } : ticket.agent,
+            agentes: usersAgent,
+        }
+    });
     // obtener agentes para designar ticketsd
 
     return (
