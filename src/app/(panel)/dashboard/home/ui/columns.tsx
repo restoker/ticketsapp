@@ -100,7 +100,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
     //     header: 'Creado',
     // },
     {
-        id: 'actions',
+        accessorKey: 'actions',
         header: 'Actions',
         cell: ({ row }) => {
             // const product = row.original;

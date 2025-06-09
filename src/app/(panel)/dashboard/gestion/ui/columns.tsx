@@ -110,10 +110,11 @@ export const columns: ColumnDef<TicketColumn>[] = [
         header: 'Designar Agente',
         cell: ({ row }) => {
             const { currentTicketId, setAgentId } = useAdminStore();
-            const agents = [...row.original.agentes, { id: 0, name: 'No asignado' }];
+            const agents = [{ id: 0, name: 'No asignado' }, ...row.original.agentes];
             const agente = row.getValue('agente') as number;
-            const currentAgent = agents.find((agent) => agent.id === agente);
-            const [value, setValue] = useState<string>(currentAgent?.id?.toString() || '0');
+            // console.log(agente);
+            // const currentAgent = agents.find((agent) => agent.id === agente);
+            const [value, setValue] = useState<string>(agente.toString());
             const idTask = row.getValue('id') as number;
             return (
                 <Suspense fallback={<Loading />}>
@@ -166,6 +167,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
                                 </svg>
                             ),
                         })
+                        window.location.reload();
                     }
                     if (!data?.ok) {
                         addToast({
@@ -209,7 +211,6 @@ export const columns: ColumnDef<TicketColumn>[] = [
                                 // console.log(currentTicketId);
                                 execute({ id: currentTicketId, agentId: agentId, priority });
                                 cleanStore();
-
                             }}
                         >
                             Guardar

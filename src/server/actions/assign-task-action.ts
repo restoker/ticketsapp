@@ -15,7 +15,7 @@ export const assignTaskAction = actionClient
     }))
     .action(async ({ parsedInput: { id, agentId, priority }, ctx: { } }) => {
         try {
-            console.log('El user id es:', agentId);
+            // console.log('El user id es:', agentId);
             // console.log('El ticket id es:', id);
             // verificar si el ticket existe
 
@@ -36,7 +36,7 @@ export const assignTaskAction = actionClient
                 ...(agentId !== 0 && { status: 'in_progress' }),
             }).where(eq(tickets.id, Number(id))).returning();
             // console.log(ticketUpdate[0]);
-            // revalidatePath('/dashboard/gestion');
+            revalidatePath('/dashboard/gestion');
             return { ok: true, msg: "Ticket asignado exitosamente" };
         } catch (error) {
             console.log(error);
