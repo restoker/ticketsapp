@@ -22,7 +22,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
         cell: ({ row }) => {
             const idProduct = row.getValue('id') as number;
             return (
-                <p className="line-clamp-1 w-20 flex ">{idProduct}</p>
+                <p className="line-clamp-1 w-20 flex justify-start">{idProduct}</p>
             );
         }
     },
@@ -32,7 +32,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
         cell: ({ row }) => {
             const titleProduct = row.getValue('title') as string;
             return (
-                <p className="line-clamp-1 flex">{titleProduct}</p>
+                <p className="line-clamp-1 flex justify-start">{titleProduct}</p>
             );
         }
     },
