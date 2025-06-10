@@ -74,9 +74,6 @@ export const columns: ColumnDef<UserColumn>[] = [
                     onChange={(value) => {
                         console.log(value);
                         setRole(value.target.value as 'user' | 'agent' | 'admin');
-                        // if (roleUser === value.target.value) {
-                        //     return;
-                        // }
                         newRoleUser(value.target.value as 'user' | 'agent' | 'admin');
 
                     }}
@@ -91,59 +88,63 @@ export const columns: ColumnDef<UserColumn>[] = [
         header: 'Actions',
         cell: ({ row }) => {
 
-            const { currenUserId, role, edit, setCurrenUserId, setRole, setEdit, cleanStore } = useUserStore();
+            const { currenUserId, role, setCurrenUserId, setEdit, cleanStore } = useUserStore();
 
-            const { execute, status, result } = useAction(updateRolAction, {
+            const { execute, status } = useAction(updateRolAction, {
                 onSuccess: ({ data }) => {
-                    if (data?.ok) {
-                        addToast({
-                            title: "Exito",
-                            description: data.msg,
-                            variant: "bordered",
-                            color: "success",
-                            timeout: 3000,
-                            shouldShowTimeoutProgress: true,
-                            closeIcon: (
-                                <svg
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    viewBox="0 0 24 24"
-                                    className="h-4 w-4"
-                                >
-                                    <path d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            ),
-                        });
-                    }
-                    if (!data?.ok) {
-                        addToast({
-                            title: "Error",
-                            description: data?.msg,
-                            variant: "bordered",
-                            color: "danger",
-                            timeout: 3000,
-                            shouldShowTimeoutProgress: true,
-                            closeIcon: (
-                                <svg
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    viewBox="0 0 24 24"
-                                    className="h-4 w-4"
-                                >
-                                    <path d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            ),
-                        });
-                    }
+                    if (data) {
+                        if (data.ok) {
+                            addToast({
+                                title: "Exito",
+                                description: data.msg,
+                                variant: "bordered",
+                                color: "success",
+                                timeout: 3000,
+                                shouldShowTimeoutProgress: true,
+                                closeIcon: (
+                                    <svg
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        viewBox="0 0 24 24"
+                                        className="h-4 w-4"
+                                    >
+                                        <path d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                ),
+                            });
+                            window.location.reload();
+                        }
+                        if (!data.ok) {
+                            addToast({
+                                title: "Error",
+                                description: data.msg,
+                                variant: "bordered",
+                                color: "danger",
+                                timeout: 3000,
+                                shouldShowTimeoutProgress: true,
+                                closeIcon: (
+                                    <svg
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        viewBox="0 0 24 24"
+                                        className="h-4 w-4"
+                                    >
+                                        <path d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                ),
+                            });
+                        }
+                    };
+
                 }
             })
-
+            const userRol = row.getValue('role') as 'user' | 'agent' | 'admin';
             return (
                 <div className="flex gap-2">
                     {currenUserId === row.getValue('id') ? (
@@ -152,10 +153,14 @@ export const columns: ColumnDef<UserColumn>[] = [
                             size="md"
                             disabled={status === 'executing'}
                             onPress={() => {
-                                console.log(currenUserId);
-                                console.log(role);
-                                // execute({ idUser: currenUserId, role: role! });
-                                // cleanStore();
+                                if (userRol === role || !userRol) {
+                                    return;
+                                }
+                                // console.log(currenUserId);
+                                // console.log(role);
+                                // console.log(userRol);
+                                execute({ idUser: currenUserId, role: role as 'user' | 'agent' | 'admin' });
+                                cleanStore();
                             }}
                         >
                             Guardar

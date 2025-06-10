@@ -19,7 +19,7 @@ export const updateRolAction = actionClient
                 where: (users, { eq }) => eq(users.id, idUser),
             })
             if (!existe) return { ok: false, msg: 'El usuario ingresado no existe' };
-
+            if (role === existe.role || !role) return { ok: false, msg: 'Debe agregar un rol valido' };
             await db.update(users).set({
                 role,
             }).where(eq(users.id, idUser));
