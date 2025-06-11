@@ -5,11 +5,14 @@ import { getToken } from 'next-auth/jwt';
 export async function middleware(request: NextRequest) {
     // 1. Get user's role (e.g., from a cookie, session, or JWT)
     const session = await getToken({ req: request, secret: process.env.AUTH_SECRET });
+    console.log(session);
     // console.log(session?.role);
     // 2. Define protected routes and required roles
     const protectedRoutes = {
         '/dashboard/task': ['user'],
         '/dashboard/users': ['admin'],
+        '/dashboard/agent': ['agent'],
+        '/dashboard/task/:path*': ['user', 'agent'],
     };
 
     // 3. Check if the current path is a protected route

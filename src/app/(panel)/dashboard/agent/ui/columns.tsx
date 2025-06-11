@@ -3,6 +3,7 @@
 import { EllipsisHorizontalCircleIcon } from '@heroicons/react/24/outline';
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@heroui/react';
 import { ColumnDef } from '@tanstack/react-table';
+import { useRouter } from 'next/navigation';
 
 export type Agent = {
     id: number;
@@ -76,8 +77,10 @@ export const columns: ColumnDef<Agent>[] = [
         accessorKey: 'actions',
         header: 'Actions',
         cell: ({ row }) => {
+            const router = useRouter();
             // const product = row.original;
             // const openModal = modalStore(state => state.openModal);
+            const taskId = row.getValue('id') as number;
             return (
                 <Dropdown className="">
                     <DropdownTrigger>
@@ -94,6 +97,7 @@ export const columns: ColumnDef<Agent>[] = [
                             key={'edit'}
                             className="cursor-pointer"
                             color="default"
+                            onPress={() => router.push(`/dashboard/task/${taskId}`)}
                         >
                             {/* <Link href={`/dashboard/addproduct?id=${product.id}`}> */}
                             Atender

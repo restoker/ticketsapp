@@ -15,9 +15,9 @@ export default async function TaskPage() {
         redirect('/login');
     }
 
-    if (session.user.role !== 'user') {
-        redirect('/dashboard');
-    }
+    // if (session.user.role !== 'user') {
+    //     redirect('/dashboard');
+    // }
     return (
         <div className="h-dvh w-full flex justify-center">
             <TaskForm email={session.user.email} name={session.user.name} />

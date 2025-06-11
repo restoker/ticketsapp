@@ -33,7 +33,7 @@ export default async function AgentDashboardPage() {
 
     return (
         <div className="h-dvh w-full">
-            <h1 className="text-white text-3xl py-5">Agent Dashboard</h1>
+            <h1 className="text-white text-3xl py-5">Tickets Asignados</h1>
 
             <DataTable columns={columns} data={agentData} />
         </div>
