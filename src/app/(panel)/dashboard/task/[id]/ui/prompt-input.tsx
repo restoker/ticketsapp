@@ -1,13 +1,13 @@
 "use client";
 
-import type {TextAreaProps} from "@heroui/react";
+import type { TextAreaProps } from "@heroui/react";
 
 import React from "react";
-import {Textarea} from "@heroui/react";
-import {cn} from "@heroui/react";
+import { Textarea } from "@heroui/react";
+import { cn } from "@heroui/react";
 
 const PromptInput = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({classNames = {}, ...props}, ref) => {
+  ({ classNames = {}, ...props }, ref) => {
     return (
       <Textarea
         ref={ref}
@@ -19,8 +19,8 @@ const PromptInput = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
           input: cn("py-0", classNames?.input),
         }}
         minRows={1}
-        placeholder="Enter a prompt here"
-        radius="lg"
+        placeholder="Ingrese su problema"
+        radius="full"
         variant="bordered"
         {...props}
       />

@@ -59,8 +59,39 @@ const presets: Preset[] = [
     },
 ];
 
+type Ticket = {
+    id: number;
+    title: string;
+    description: string;
+    agentId: number | null;
+    clientId: number | null;
+    status: "open" | "closed" | "in_progress" | null;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    ticketComments: {
+        id: number;
+        comment: string;
+        userId: number;
+        ticketId: number;
+        createdAt: Date | null;
+        updatedAt: Date | null;
+    }[];
+    agent: {
+        id: number;
+        name: string;
+        email: string;
+        role: 'user' | 'agent' | 'admin' | null;
+    };
+    client: {
+        id: number;
+        name: string;
+        email: string;
+        role: 'user' | 'agent' | 'admin' | null;
+    };
+};
 
-const Playground = () => {
+
+const Playground = ({ userId, role, comments }: { userId: number; role: string; comments: Ticket['ticketComments']; }) => {
 
     const [selectedPreset, setSelectedPreset] = React.useState<Preset | null>(null);
     const [selectedModel, setSelectedModel] = React.useState<React.Key | null>("gpt-4");
@@ -71,30 +102,12 @@ const Playground = () => {
     // const [frequencyPenalty, setFrequencyPenalty] = React.useState<number>(0);
     // const [presencePenalty, setPresencePenalty] = React.useState<number>(0);
 
-    const onSelectedPresetChange = (key: React.Key) => {
-        const preset = presets.find((preset) => preset.id === key);
-
-        if (!preset) {
-            return;
-        }
-
-        setSelectedPreset(preset);
-    };
-
-    const onModelChange = (keys: Selection) => {
-        const newModel = Array.from(keys)[0];
-
-        if (newModel) {
-            setSelectedModel(newModel);
-        }
-    };
-
 
     return (
         <section className="h-full w-full">
             <header className="flex w-full flex-col items-center gap-4 pb-6 lg:flex-row lg:justify-between">
                 <div className="flex items-center gap-2">
-                    <h1 className="text-large font-medium">Playground</h1>
+                    <h1 className="text-large font-medium">Chat</h1>
                     {/* <Popover>
                         <PopoverTrigger>
                             <Button isIconOnly className="flex lg:hidden" radius="full" size="sm" variant="flat">
