@@ -10,9 +10,11 @@ import Conversation from "./conversation";
 export default function Component({
   className,
   scrollShadowClassname,
+  ticketId
 }: {
   className?: string;
   scrollShadowClassname?: string;
+  ticketId: number;
 }) {
   return (
     <div className={cn("flex h-full w-full max-w-full flex-col gap-8", className)}>
@@ -28,7 +30,7 @@ export default function Component({
         <Conversation />
       </ScrollShadow>
       <div className="flex flex-col gap-2">
-        <PromptInputWithBottomActions />
+        <PromptInputWithBottomActions ticketId={ticketId} />
         {/* <p className="px-2 text-tiny text-default-400">
           Acme AI can make mistakes. Consider checking important information.
         </p> */}

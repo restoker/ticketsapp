@@ -8,8 +8,13 @@ import { cn } from "@heroui/react";
 import PromptInput from "./prompt-input";
 import { useAction } from "next-safe-action/hooks";
 import { createCommentAction } from "@/server/actions/create-comment-action";
+import { useSession } from "next-auth/react";
+import { notFound } from "next/navigation";
 
-export default function Component() {
+export default function Component({ ticketId }: { ticketId: number }) {
+  const { data } = useSession()
+  if (!data) notFound();
+  const idUser = Number(data.user.id);
   const ideas = [
     {
       title: "El problema persiste",
@@ -112,8 +117,8 @@ export default function Component() {
     });
 
     execute({
-      idTicket: 1,
-      idUser: 1,
+      idTicket: ticketId,
+      idUser,
       comment: prompt
     })
   };
@@ -143,7 +148,7 @@ export default function Component() {
                 <Button
                   isIconOnly
                   color={!prompt ? "default" : "primary"}
-                  isDisabled={!prompt}
+                  isDisabled={!prompt || status === 'executing'}
                   radius="full"
                   size="sm"
                   variant="solid"

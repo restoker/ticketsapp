@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 // import Link from "next/link";
 import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
+import Link from "next/link";
 
 type TicketColumn = {
     id: number;
@@ -104,6 +105,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
         header: 'Actions',
         cell: ({ row }) => {
             // const product = row.original;
+            const id = row.getValue('id') as number;
             // const openModal = modalStore(state => state.openModal);
             return (
                 <Dropdown className="">
@@ -122,9 +124,9 @@ export const columns: ColumnDef<TicketColumn>[] = [
                             className="cursor-pointer"
                             color="default"
                         >
-                            {/* <Link href={`/dashboard/addproduct?id=${product.id}`}> */}
-                            Edit product
-                            {/* </Link> */}
+                            <Link href={`/dashboard/task/${id}`}>
+                                Ver ticket
+                            </Link>
                         </DropdownItem>
                         <DropdownItem
                             key={'delete'}
@@ -132,7 +134,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
                             color="danger"
                         // onClick={() => openModal(product.id)}
                         >
-                            Delete product
+                            Cerrar ticket
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>

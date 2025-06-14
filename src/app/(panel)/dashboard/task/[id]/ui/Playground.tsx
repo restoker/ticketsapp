@@ -60,14 +60,6 @@ const presets: Preset[] = [
 ];
 
 type Ticket = {
-    id: number;
-    title: string;
-    description: string;
-    agentId: number | null;
-    clientId: number | null;
-    status: "open" | "closed" | "in_progress" | null;
-    createdAt: Date | null;
-    updatedAt: Date | null;
     ticketComments: {
         id: number;
         comment: string;
@@ -76,22 +68,10 @@ type Ticket = {
         createdAt: Date | null;
         updatedAt: Date | null;
     }[];
-    agent: {
-        id: number;
-        name: string;
-        email: string;
-        role: 'user' | 'agent' | 'admin' | null;
-    };
-    client: {
-        id: number;
-        name: string;
-        email: string;
-        role: 'user' | 'agent' | 'admin' | null;
-    };
 };
 
 
-const Playground = ({ userId, role, comments }: { userId: number; role: string; comments: Ticket['ticketComments']; }) => {
+const Playground = ({ userId, role, comments, ticketId }: { userId: number; role: string; comments: Ticket['ticketComments']; ticketId: number }) => {
 
     const [selectedPreset, setSelectedPreset] = React.useState<Preset | null>(null);
     const [selectedModel, setSelectedModel] = React.useState<React.Key | null>("gpt-4");
@@ -154,6 +134,7 @@ const Playground = ({ userId, role, comments }: { userId: number; role: string; 
                     <PromptContainerWithConversation
                         className="max-w-full px-0 lg:pl-10"
                         scrollShadowClassname="h-[40vh] lg:h-[50vh]"
+                        ticketId={ticketId}
                     />
                 </div>
             </main>

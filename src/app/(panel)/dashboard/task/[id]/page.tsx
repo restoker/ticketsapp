@@ -45,12 +45,12 @@ export default async function TaskIdPage({ params }: { params: { id: string } })
 
     const comments = ticket.ticketComments;
 
-    // console.log(ticket);
+    console.log(ticket);
 
     return (
         <div>
             {/* <h1>Task ID</h1> */}
-            <Playground userId={userId} role={role} comments={comments} />
+            <Playground userId={userId} role={role} comments={comments} ticketId={ticket.id} />
         </div>
     );
 }
