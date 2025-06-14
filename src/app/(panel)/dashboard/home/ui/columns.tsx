@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { EllipsisHorizontalCircleIcon } from "@heroicons/react/24/outline";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type TicketColumn = {
     id: number;
@@ -104,6 +105,7 @@ export const columns: ColumnDef<TicketColumn>[] = [
         accessorKey: 'actions',
         header: 'Actions',
         cell: ({ row }) => {
+            const router = useRouter();
             // const product = row.original;
             const id = row.getValue('id') as number;
             // const openModal = modalStore(state => state.openModal);
@@ -123,10 +125,9 @@ export const columns: ColumnDef<TicketColumn>[] = [
                             key={'edit'}
                             className="cursor-pointer"
                             color="default"
+                            onPress={() => router.push(`/dashboard/task/${id}`)}
                         >
-                            <Link href={`/dashboard/task/${id}`}>
-                                Ver ticket
-                            </Link>
+                            Ver ticket
                         </DropdownItem>
                         <DropdownItem
                             key={'delete'}

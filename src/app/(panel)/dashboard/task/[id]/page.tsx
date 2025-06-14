@@ -6,18 +6,16 @@ import { auth } from "@/server/auth";
 export default async function TaskIdPage({ params }: { params: { id: string } }) {
     const { id } = await params;
     const session = await auth();
+    // console.log(session);
     if (!session) return redirect('/login');
 
     const userId = Number(session.user.id);
     const role = session.user.role;
 
-    const realId = id.toString();
-
-    if (!id) return notFound();
-    if (isNaN(Number(realId))) return notFound();
+    if (isNaN(Number(id))) notFound();
 
     const ticket = await db.query.tickets.findFirst({
-        where: (tickets, { eq }) => eq(tickets.id, Number(realId)) && eq(tickets.agentId, Number(userId)),
+        where: (tickets, { eq }) => eq(tickets.id, Number(id)),
         with: {
             ticketComments: {
                 orderBy: (ticketComments, { asc }) => [asc(ticketComments.createdAt)],
@@ -41,7 +39,15 @@ export default async function TaskIdPage({ params }: { params: { id: string } })
         }
     });
 
-    if (!ticket) return notFound();
+    if (!ticket) notFound();
+
+    if (role === 'user') {
+        if (ticket.clientId !== userId) notFound();
+    }
+
+    if (role === 'agent') {
+        if (ticket.agentId !== userId) notFound();
+    }
 
     const comments = ticket.ticketComments;
 
