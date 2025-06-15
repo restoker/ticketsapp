@@ -6,15 +6,18 @@ import { cn } from "@heroui/react";
 import PromptInputWithBottomActions from "./prompt-input-with-bottom-actions";
 
 import Conversation from "./conversation";
+import { TicketComments } from "./Playground";
 
 export default function Component({
   className,
   scrollShadowClassname,
-  ticketId
+  ticketId,
+  comments,
 }: {
   className?: string;
   scrollShadowClassname?: string;
   ticketId: number;
+  comments: TicketComments[];
 }) {
   return (
     <div className={cn("flex h-full w-full max-w-full flex-col gap-8", className)}>
@@ -27,7 +30,7 @@ export default function Component({
         </Tabs> */}
       </div>
       <ScrollShadow className={cn("flex h-full flex-col", scrollShadowClassname)}>
-        <Conversation />
+        <Conversation comments={comments} />
       </ScrollShadow>
       <div className="flex flex-col gap-2">
         <PromptInputWithBottomActions ticketId={ticketId} />

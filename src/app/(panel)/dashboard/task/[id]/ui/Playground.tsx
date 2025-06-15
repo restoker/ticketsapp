@@ -59,19 +59,23 @@ const presets: Preset[] = [
     },
 ];
 
-type Ticket = {
-    ticketComments: {
+export type TicketComments = {
+    id: number;
+    comment: string;
+    userId: number;
+    ticketId: number;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+    users: {
         id: number;
-        comment: string;
-        userId: number;
-        ticketId: number;
-        createdAt: Date | null;
-        updatedAt: Date | null;
-    }[];
+        name: string;
+        email: string;
+        role: string;
+    };
 };
 
 
-const Playground = ({ userId, role, comments, ticketId }: { userId: number; role: string; comments: Ticket['ticketComments']; ticketId: number }) => {
+const Playground = ({ userId, role, comments, ticketId }: { userId: number; role: string; comments: TicketComments[]; ticketId: number }) => {
 
     const [selectedPreset, setSelectedPreset] = React.useState<Preset | null>(null);
     const [selectedModel, setSelectedModel] = React.useState<React.Key | null>("gpt-4");
@@ -135,6 +139,7 @@ const Playground = ({ userId, role, comments, ticketId }: { userId: number; role
                         className="max-w-full px-0 lg:pl-10"
                         scrollShadowClassname="h-[40vh] lg:h-[50vh]"
                         ticketId={ticketId}
+                        comments={comments}
                     />
                 </div>
             </main>

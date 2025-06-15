@@ -19,23 +19,17 @@ export default async function TaskIdPage({ params }: { params: { id: string } })
         with: {
             ticketComments: {
                 orderBy: (ticketComments, { asc }) => [asc(ticketComments.createdAt)],
-            },
-            agent: {
-                columns: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    role: true,
-                }
-            },
-            client: {
-                columns: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    role: true,
+                with: {
+                    users: {
+                        columns: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            role: true,
+                        }
+                    }
                 },
-            },
+            }
         }
     });
 
@@ -51,7 +45,7 @@ export default async function TaskIdPage({ params }: { params: { id: string } })
 
     const comments = ticket.ticketComments;
 
-    console.log(ticket);
+    // console.log(ticket);
 
     return (
         <div>
