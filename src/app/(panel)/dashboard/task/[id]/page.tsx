@@ -50,7 +50,30 @@ export default async function TaskIdPage({ params }: { params: { id: string } })
     return (
         <div>
             {/* <h1>Task ID</h1> */}
-            <Playground userId={userId} role={role} comments={comments} ticketId={ticket.id} />
+            {ticket.status === 'in_progress'
+                ?
+                <Playground userId={userId} role={role} comments={comments} ticketId={ticket.id} />
+                :
+                ticket.status === 'closed' ?
+
+                    <div className="flex h-dvh w-full flex-col items-center">
+                        <img
+                            className="h-96 object-cover rounded-full"
+                            src="https://cdn.cosmos.so/74fe635e-cb31-41e5-ad2a-c8a7ece4279e?format=jpeg"
+                            alt=""
+                        />
+                        <h1 className="text-xl font-medium italic">Este ticket esta cerrado</h1>
+                    </div>
+                    :
+                    <div className="flex h-dvh w-full flex-col items-center">
+                        <img
+                            className="h-72 object-cover rounded-full"
+                            src="https://cdn.cosmos.so/1adabc9c-fdb5-419e-b860-810235372e93?format=jpeg"
+                            alt=""
+                        />
+                        <h1 className="text-xl font-medium italic">Este ticket esta siendo asignado, espere por favor o recargue la página</h1>
+                    </div>
+            }
         </div>
     );
 }

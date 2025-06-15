@@ -88,7 +88,7 @@ const Playground = ({ userId, role, comments, ticketId }: { userId: number; role
 
 
     return (
-        <section className="h-full w-full">
+        <section className="h-dvh w-full">
             <header className="flex w-full flex-col items-center gap-4 pb-6 lg:flex-row lg:justify-between">
                 <div className="flex items-center gap-2">
                     <h1 className="text-large font-medium">Chat</h1>
@@ -103,32 +103,15 @@ const Playground = ({ userId, role, comments, ticketId }: { userId: number; role
                         </PopoverContent>
                     </Popover> */}
                 </div>
-                <div className="flex items-center gap-2">
-                    {/* <Select
-                        aria-label="Saved presets"
-                        className="w-[200px] max-w-[120px] lg:max-w-[230px]"
-                        labelPlacement="outside"
-                        placeholder="Select a preset"
-                        selectedKeys={selectedPreset ? [selectedPreset.id] : []}
-                        size="sm"
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                            onSelectedPresetChange(e.target.value);
-                        }}
-                    >
-                        {presets.map((preset) => (
-                            <SelectItem key={preset.id}>{preset.name}</SelectItem>
-                        ))}
-                    </Select> */}
+                {role === 'agent' ? <div className="flex items-center gap-2">
                     <Button size="sm" variant="flat">
                         Save
                     </Button>
-                    {/* <Button size="sm" variant="flat">
-                        Update
-                    </Button> */}
+
                     <Button color="danger" size="sm" variant="flat">
                         Cerrar ticket
                     </Button>
-                </div>
+                </div> : null}
             </header>
             <main className="flex">
                 {/* Controls */}
