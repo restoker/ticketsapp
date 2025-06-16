@@ -1,14 +1,13 @@
 "use client";
 
-import type { Selection } from "@heroui/react";
-
 import React from "react";
 import {
+    addToast,
     Button,
-    Select,
-    SelectItem,
 } from "@heroui/react";
 import PromptContainerWithConversation from "./prompt-container-with-conversation";
+import { useAction } from "next-safe-action/hooks";
+import { closeTicketAction } from "@/server/actions/close-ticket-action";
 
 
 type Preset = {
@@ -77,38 +76,100 @@ export type TicketComments = {
 
 const Playground = ({ userId, role, comments, ticketId }: { userId: number; role: string; comments: TicketComments[]; ticketId: number }) => {
 
-    const [selectedPreset, setSelectedPreset] = React.useState<Preset | null>(null);
-    const [selectedModel, setSelectedModel] = React.useState<React.Key | null>("gpt-4");
-    // const [systemMessage, setSystemMessage] = React.useState<string>("");
-    // const [temperature, setTemperature] = React.useState<number>(0.5);
-    // const [maxLength, setMaxLength] = React.useState<number>(1024);
-    // const [topP, setTopP] = React.useState<number>(0.5);
-    // const [frequencyPenalty, setFrequencyPenalty] = React.useState<number>(0);
-    // const [presencePenalty, setPresencePenalty] = React.useState<number>(0);
 
+    const { execute, status } = useAction(closeTicketAction, {
+        onSuccess: ({ data }) => {
+            if (data) {
+                if (data.ok) {
+                    addToast({
+                        title: data.msg,
+                        variant: "bordered",
+                        color: "success",
+                        timeout: 3000,
+                        shouldShowTimeoutProgress: true,
+                        closeIcon: (
+                            <svg
+                                fill="none"
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                                width="32"
+                            >
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        ),
+                    })
+                }
+                if (!data.ok) {
+                    addToast({
+                        title: data.msg,
+                        variant: "bordered",
+                        color: "danger",
+                        timeout: 3000,
+                        shouldShowTimeoutProgress: true,
+                        closeIcon: (
+                            <svg
+                                fill="none"
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                                width="32"
+                            >
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        ),
+                    })
+                }
+            }
+        },
+        onError: () => {
+            addToast({
+                title: "Error al cerrar el ticket",
+                variant: "bordered",
+                color: "danger",
+                timeout: 3000,
+                shouldShowTimeoutProgress: true,
+                closeIcon: (
+                    <svg
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        width="32"
+                    >
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                    </svg>
+                ),
+            })
+        }
+    })
 
     return (
         <section className="h-dvh w-full">
             <header className="flex w-full flex-col items-center gap-4 pb-6 lg:flex-row lg:justify-between">
                 <div className="flex items-center gap-2">
                     <h1 className="text-large font-medium">Chat</h1>
-                    {/* <Popover>
-                        <PopoverTrigger>
-                            <Button isIconOnly className="flex lg:hidden" radius="full" size="sm" variant="flat">
-                                <Icon icon="solar:menu-dots-bold" width={24} />
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="fle-col flex max-h-[40vh] w-[300px] justify-start gap-3 overflow-scroll p-4">
-                            {controlsContent}
-                        </PopoverContent>
-                    </Popover> */}
                 </div>
                 {role === 'agent' ? <div className="flex items-center gap-2">
-                    <Button size="sm" variant="flat">
+                    {/* <Button size="sm" variant="flat">
                         Save
-                    </Button>
+                    </Button> */}
 
-                    <Button color="danger" size="sm" variant="flat">
+                    <Button
+                        color="danger"
+                        size="sm"
+                        variant="flat"
+                        onPress={() => execute({ ticketId, agentId: userId })}
+                    >
                         Cerrar ticket
                     </Button>
                 </div> : null}

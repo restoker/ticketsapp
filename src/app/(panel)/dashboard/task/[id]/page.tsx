@@ -58,10 +58,18 @@ export default async function TaskIdPage({ params }: { params: { id: string } })
 
                     <div className="flex h-dvh w-full flex-col items-center">
                         <img
-                            className="h-96 object-cover rounded-full"
-                            src="https://cdn.cosmos.so/74fe635e-cb31-41e5-ad2a-c8a7ece4279e?format=jpeg"
+                            className="h-80 object-cover rounded-full"
+                            src="https://cdn.cosmos.so/804d2f77-f44b-4ab7-ad18-5ebf5ef04a9f?format=jpeg"
                             alt=""
                         />
+                        {/* <video
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            src="https://cdn.cosmos.so/f931ad02-d7ef-48fa-b849-1845728a5b55.mp4"
+                            className="aspect-square h-80 object-cover rounded-full"
+                        ></video> */}
                         <h1 className="text-xl font-medium italic">Este ticket esta cerrado</h1>
                     </div>
                     :
